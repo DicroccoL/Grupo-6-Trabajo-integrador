@@ -1,44 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco Vintage</title>
+    <title>Eco Vintage - Productos</title>
     <link rel="stylesheet" href="../assets/inicio.css">
 </head>
 <body>
     <nav class="navbar">
-
-    <div class="nav-brand">
-        <img src="../img\logo.png" alt="Logo">
-        <div>
-            <h1>Eco Vintage</h1>
-            <span>Indumentaria & Calzado</span>
-        </div>
-    </div>
-
-    <div class="nav-actions">
-
-        <button class="carrito-btn">
-            <p>Carrito</p>
-            <span class="carrito-count">0</span>
-        </button>
-
-        <div class="user-box">
-            <div class="avatar">
-                LC
-            </div>
-
-            <div class="user-info">
-                <span class="welcome">Bienvenido</span>
-                <strong id="nombreUsuario">
-                    Lucas
-                </strong>
+        <div class="nav-brand">
+            <img src="../img/logo.png" alt="Logo">
+            <div>
+                <h1>Eco Vintage</h1>
+                <span>Sección Productos</span>
             </div>
         </div>
+        
+        <div class="nav-actions">
+            <button class="carrito-btn" id="btn-ir-carrito">
+                🛒 Ver Carrito
+                <span class="carrito-count" id="contador-carrito">0</span>
+            </button>
 
+            <div class="user-box">
+                <div class="avatar" id="avatarUsuario">--</div>
+                <div class="user-info">
+                    <span class="welcome">Cliente</span>
+                    <strong id="nombreUsuario">Cargando...</strong>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="totem-container">
+        <aside class="categorias-sidebar">
+            <button class="categoria-btn activa" id="btn-indumentaria">
+                <span class="icono">👕</span> Indumentaria
+            </button>
+            <button class="categoria-btn" id="btn-calzado">
+                <span class="icono">👟</span> Calzado
+            </button>
+        </aside>
+
+        <main class="productos-grid" id="contenedor-productos">
+            <p class="cargando">Cargando variantes...</p>
+        </main>
     </div>
 
-</nav>
+    <footer class="main-footer">
+        <p>Eco Vintage &copy; 2026 - Desarrollado por: <strong>[Nombre Alumno 1], [Nombre Alumno 2] - Grupo 6</strong></p>
+    </nav>
+
+    <script src="../js/inicio.js"></script>
 </body>
 </html>

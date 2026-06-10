@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Vintage - Mi Carrito</title>
+    <link rel="stylesheet" href="../assets/inicio.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="../img/logo.png" alt="Logo">
+            <div>
+                <h1>Eco Vintage</h1>
+                <span>Mi Carrito</span>
+            </div>
+        </div>
+        
+        <div class="nav-actions">
+            <button class="carrito-btn" id="btn-volver-catalogo">
+                👕 Volver al Catálogo
+            </button>
+
+            <div class="user-box">
+                <div class="avatar" id="avatarUsuario">--</div>
+                <div class="user-info">
+                    <span class="welcome">Cliente</span>
+                    <strong id="nombreUsuario">Cargando...</strong>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="totem-container">
+        
+        <main class="productos-grid" id="contenedor-carrito-items" style="display: flex; flex-direction: column; gap: 15px;">
+            <p class="cargando">Cargando productos seleccionados...</p>
+        </main>
+
+        <aside class="ticket-panel">
+            <h2>Resumen del Pedido</h2>
+            <div class="ticket-lineas" style="justify-content: center; align-items: center;">
+                <p style="color: #8f8f8f; text-align: center; font-size: 0.9rem;">
+                    Por favor, revise las cantidades antes de emitir su comprobante de pago.
+                </p>
+            </div>
+            
+            <div class="ticket-totales">
+                <div class="total-fila">
+                    <span>Total a Pagar:</span>
+                    <span id="carrito-total">$0</span>
+                </div>
+                <button class="btn-finalizar" id="btn-confirmar-carrito" disabled>
+                    🧾 Confirmar y Ver Ticket
+                </button>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer class="main-footer" style="text-align: center; padding: 15px; color: #666; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto;">
+        <p>Eco Vintage &copy; 2026 - Desarrollado por: <strong>Tiago Esposito, Lucas Di Crocco - Grupo 6</strong></p>
+    </footer>
+
+    <script src="../js/carrito.js"></script>
+</body>
+</html>
