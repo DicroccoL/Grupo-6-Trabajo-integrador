@@ -1,0 +1,133 @@
+body{
+    background:#0f0f0f;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.navbar{
+    height:80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40px;
+    background:rgba(255,255,255,.04);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    margin:20px;
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+}
+
+.nav-brand{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.nav-brand img{
+    width:55px;
+    height:55px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+}
+
+.nav-brand h1{
+    color:white;
+    font-size:1.2rem;
+}
+
+.nav-brand span{
+    color:#8f8f8f;
+    font-size:.85rem;
+}
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.carrito-btn{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:15px;
+    background:#1d1d1d;
+    color:white;
+    cursor:pointer;
+    position:relative;
+    transition:.3s;
+}
+
+.carrito-btn:hover{
+    transform:translateY(-3px);
+}
+
+.carrito-count{
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#2563eb;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:.75rem;
+}
+
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+.user-info{
+    display:flex;
+    flex-direction:column;
+}
+
+.welcome{
+    color:#8f8f8f;
+    font-size:.75rem;
+}
+
+.user-info strong{
+    color:white;
+}
+@media(max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        align-items:stretch;
+
+        height:auto;
+
+        padding:20px;
+        gap:20px;
+    }
+
+    .nav-brand{
+        justify-content:center;
+    }
+
+    .nav-actions{
+        justify-content:space-between;
+    }
+
+}

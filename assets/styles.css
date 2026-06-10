@@ -76,6 +76,18 @@
 .login-box button:hover{
     transform:translateY(-2px);
 }
+
+#mensajeError{
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 8px;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+#mensajeError.mostrar{
+    opacity: 1;
+}
 @media (max-width:768px){
 
     .container{
