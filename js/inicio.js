@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Control de usuario
     const nombreGuardado = localStorage.getItem("nombreUsuario");
     if (!nombreGuardado) { window.location.href = "../index.html"; return; }
     
     document.getElementById("nombreUsuario").textContent = nombreGuardado;
     document.getElementById("avatarUsuario").textContent = nombreGuardado.charAt(0).toUpperCase();
 
-    // Base de datos de productos (Simulada)
+
     const productos = [
         { id: 1, nombre: "Campera de Cuero Vintage", precio: 25000, categoria: "indumentaria", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400" },
         { id: 2, nombre: "Remera Oversize Rock 90s", precio: 8500, categoria: "indumentaria", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400" },
@@ -15,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 5, nombre: "Zapatillas Retro Skate", precio: 22000, categoria: "calzado", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400" }
     ];
 
-    // Recuperamos el carrito que ya exista o iniciamos uno vacío
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
     const contenedorProductos = document.getElementById("contenedor-productos");
@@ -55,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
         actualizarContador();
     }
 
-    // Navegación al hacer clic en el Carrito
     document.getElementById("btn-ir-carrito").addEventListener("click", () => {
         window.location.href = "carrito.html";
     });

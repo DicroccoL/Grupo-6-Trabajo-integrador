@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. CONTROL DE USUARIO Y SEGURIDAD
     const nombreGuardado = localStorage.getItem("nombreUsuario");
     if (!nombreGuardado) {
         window.location.href = "../index.html";
@@ -8,21 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("nombreUsuario").textContent = nombreGuardado;
     document.getElementById("avatarUsuario").textContent = nombreGuardado.charAt(0).toUpperCase();
 
-    // 2. RECUPERAR EL CARRITO ACTUAL DESDE LOCALSTORAGE
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-    // Elementos del DOM
     const contenedorItems = document.getElementById("contenedor-carrito-items");
     const totalEl = document.getElementById("carrito-total");
     const btnConfirmar = document.getElementById("btn-confirmar-carrito");
     const btnVolver = document.getElementById("btn-volver-catalogo");
 
-    // 3. RENDERIZAR LA PANTALLA DEL CARRITO
     function renderizarCarrito() {
-        contenedorItems.innerHTML = ""; // Limpiamos pantalla
+        contenedorItems.innerHTML = ""; 
 
         if (carrito.length === 0) {
-            contenedorItems.innerHTML = /*html*/`
+            contenedorItems.innerHTML = `
                 <div class="carrito-vacios-contenedor">
                     <span class="carrito-vacio-icono">🛒</span>
                     <h3>Su carrito está completamente vacío</h3>
@@ -64,45 +60,35 @@ document.addEventListener("DOMContentLoaded", () => {
                     </p>
                 </div>
             `;
-
-            // Asignar eventos lógicos a los botones de sumar y restar cantidades
             itemRow.querySelector(".btn-restar").addEventListener("click", () => alterarCantidad(index, -1));
             itemRow.querySelector(".btn-sumar").addEventListener("click", () => alterarCantidad(index, 1));
 
             contenedorItems.appendChild(itemRow);
         });
 
-        // Actualizamos el panel resumen derecho
         totalEl.textContent = `$${totalGeneral.toLocaleString('es-AR')}`;
         btnConfirmar.disabled = false;
     }
 
-    // 4. FUNCIÓN PARA CAMBIAR CANTIDADES (+1 ó -1)
+
     function alterarCantidad(index, cambio) {
         carrito[index].cantidad += cambio;
 
-        // Si la cantidad llega a 0, eliminamos el producto del carrito
+    
         if (carrito[index].cantidad <= 0) {
             carrito.splice(index, 1);
         }
-
-        // Sincronizamos los cambios con el LocalStorage
         localStorage.setItem("carrito", JSON.stringify(carrito));
         
-        // Volvemos a generar la pantalla actualizada
         renderizarCarrito();
     }
-
-    // 5. NAVEGACIÓN ENTRE PÁGINAS (BOTONES OBLIGATORIOS)
     btnVolver.addEventListener("click", () => {
         window.location.href = "inicio.html";
     });
 
     btnConfirmar.addEventListener("click", () => {
-        // Al confirmar el carrito saltamos directamente a la vista del ticket
         window.location.href = "ticket.html";
     });
 
-    // Ejecución inicial de la pantalla
     renderizarCarrito();
 });
