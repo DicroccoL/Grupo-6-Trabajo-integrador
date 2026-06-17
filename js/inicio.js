@@ -105,29 +105,28 @@ document.addEventListener("DOMContentLoaded", () => {
             contenedorProductos.appendChild(card);
         });
     }
+function agregarAlCarrito(producto) {
+    const existe = carrito.find(
+        item => item.id === producto.id
+    );
 
-    function agregarAlCarrito(producto) {
-
-        const existe = carrito.find(
-            item => item.id === producto.id
-        );
-
-        if (existe) {
-            existe.cantidad++;
-        } else {
-            carrito.push({
-                ...producto,
-                cantidad: 1
-            });
-        }
-
-        localStorage.setItem(
-            "carrito",
-            JSON.stringify(carrito)
-        );
-
-        actualizarContador();
+    if (existe) {
+        existe.cantidad++;
+    } else {
+        carrito.push({
+            ...producto,
+            cantidad: 1
+        });
     }
+
+    localStorage.setItem(
+        "carrito",
+        JSON.stringify(carrito)
+    );
+
+    actualizarContador();
+    mostrarAlertaVerde();
+}
 
     btnIndumentaria.addEventListener("click", () => {
 
@@ -153,3 +152,21 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarContador();
 
 });
+
+function mostrarAlertaVerde() {
+    const alerta = document.createElement("div");
+    alerta.classList.add("alerta-carrito");
+    alerta.innerHTML = `✨ Agregado Exitosamente`;
+    document.body.appendChild(alerta);
+
+    setTimeout(() => {
+        alerta.classList.add("mostrar");
+    }, 10);
+
+    setTimeout(() => {
+        alerta.classList.remove("mostrar");
+        setTimeout(() => {
+            alerta.remove();
+        }, 300);
+    }, 2000);
+}

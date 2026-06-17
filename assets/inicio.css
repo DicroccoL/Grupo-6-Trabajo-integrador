@@ -521,7 +521,34 @@ body {
     cursor:pointer;
     transition:.3s;
 }
-
 .btn-agregar:hover{
     background:#1d4ed8;
+}
+.alerta-carrito {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    
+    background-color: #10b981; 
+    color: white;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    
+    z-index: 2000; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;}
+
+.alerta-carrito.mostrar {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
 }
