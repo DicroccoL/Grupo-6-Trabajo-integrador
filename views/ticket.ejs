@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Vintage - Comprobante de Compra</title>
+    <link rel="stylesheet" href="/assets/inicio.css">
+</head>
+<body>
+
+    <!-- Navbar idéntica al Catálogo y Carrito -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="/img/logo.png" alt="Logo">
+            <div>
+                <h1>Eco Vintage</h1>
+                <span>Comprobante de Pago</span>
+            </div>
+        </div>
+        
+        <div class="nav-actions">
+            <div class="user-box">
+                <div class="avatar" id="avatarUsuario">--</div>
+                <div class="user-info">
+                    <span class="welcome">Cliente</span>
+                    <strong id="nombreUsuario">Cargando...</strong>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor del Ticket adaptado al diseño general -->
+    <div class="container-ticket-final">
+        <div class="ticket-card-box">
+            <div class="ticket-header">
+                <span class="ticket-icon">✨</span>
+                <h2 class="ticket-title">¡Compra Exitosa!</h2>
+                <p class="ticket-subtitle">Gracias por apoyar la moda circular en Eco Vintage</p>
+            </div>
+            
+            <div class="ticket-section-line">
+                <div class="ticket-row-data">
+                    <strong>Cliente:</strong>
+                    <span id="ticket-cliente">-</span>
+                </div>
+                <div class="ticket-row-data">
+                    <strong>Fecha:</strong>
+                    <span id="ticket-fecha">-</span>
+                </div>
+                <div class="ticket-row-data">
+                    <strong>N° Operación:</strong>
+                    <span id="ticket-id">-</span>
+                </div>
+            </div>
+
+            <div id="ticket-productos-list" class="ticket-section-line productos-ticket-scroll">
+            </div>
+
+            <div class="ticket-total-final">
+                <span>TOTAL ABONADO:</span>
+                <span id="ticket-total-monto">$0</span>
+            </div>
+
+            <div class="ticket-actions-panel">
+                <button class="btn-finalizar" onclick="window.print()">🖨️ Imprimir Comprobante</button>
+                <a href="/inicio" class="btn-volver-link" id="btn-volver-inicio">👕 Volver al Catálogo</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <p>© 2026 Eco Vintage - Grupo 6. Trabajo Práctico Integrador.</p>
+    </footer>
+
+    <script src="/js/ticket.js"></script>
+</body>
+</html>

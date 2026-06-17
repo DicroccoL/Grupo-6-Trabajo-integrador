@@ -552,3 +552,162 @@ body {
     transform: translate(-50%, -50%) scale(1);
     pointer-events: auto;
 }
+.container-ticket-final {
+    max-width: 500px;
+    width: 100%;
+    margin: 140px auto 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.ticket-card-box {
+    background: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.4);
+}
+
+.ticket-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.ticket-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.ticket-title {
+    color: #10b981; 
+    font-size: 1.6rem;
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.ticket-subtitle {
+    color: #8f8f8f;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.ticket-section-line {
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.productos-ticket-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.productos-ticket-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.productos-ticket-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+}
+
+.ticket-row-data, .ticket-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.ticket-row-data strong {
+    color: #8f8f8f;
+    font-weight: normal;
+}
+
+.ticket-row-data span {
+    color: white;
+    font-weight: bold;
+}
+
+.ticket-item-row {
+    color: #ccc;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.ticket-item-row .tkt-prod-name {
+    color: white;
+}
+
+.ticket-item-row .tkt-prod-subtotal {
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.ticket-total-final {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 25px;
+    padding: 5px 0;
+}
+
+.ticket-total-final span:last-child {
+    color: #10b981;
+    font-size: 1.4rem;
+}
+
+.ticket-actions-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-volver-link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 15px;
+    background: #1d1d1d;
+    color: white;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.btn-volver-link:hover {
+    background: #2c2c2c;
+    transform: translateY(-2px);
+}
+
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    .navbar, .ticket-actions-panel, .main-footer, .ticket-icon {
+        display: none !important;
+    }
+    .container-ticket-final {
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+    }
+    .ticket-card-box {
+        border: none;
+        box-shadow: none;
+        background: white;
+        color: black;
+    }
+    .ticket-title { color: black !important; }
+    .ticket-row-data span, .ticket-total-final, .ticket-item-row .tkt-prod-name, .ticket-item-row .tkt-prod-subtotal { color: black !important; }
+    .ticket-item-row { border: 1px solid #ccc; background: none; }
+}
