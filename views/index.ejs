@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco vintage</title>
+    <title>Eco Vintage</title>
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
- 
-<h1>PRUEBA EJS</h1>
 <body>
- <body>
     <div class="container">
 
         <div class="izquierda-panel">
@@ -17,28 +14,35 @@
         </div>
 
         <div class="derecha-panel">
-
+            
             <div class="login-box">
-
+                
                 <h1>Eco Vintage</h1>
-                <p>Bienvenido</p>
+                
+                <div class="tabs-login" style="display: flex; gap: 15px; margin-bottom: 20px; position: relative; z-index: 10;">
+                    <span id="tab-cliente" class="tab-item active" style="cursor:pointer; font-weight:bold; color:#111; border-bottom: 2px solid #111; padding-bottom: 5px; -webkit-user-select: none; user-select: none;">Cliente</span>
+                    <span id="tab-admin" class="tab-item" style="cursor:pointer; color:#888; padding-bottom: 5px; -webkit-user-select: none; user-select: none;">Administrador</span>
+                </div>
 
-                <input
-                    type="text"
-                    id="nombre"
-                    placeholder="Ingrese su nombre">
-                <p id="mensajeError"></p>
+                <div id="form-cliente" style="display: block;">
+                    <p style="margin-bottom: 15px;">Bienvenido al catálogo circular</p>
+                    <input type="text" id="nombre" placeholder="Ingrese su nombre" style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+                    <p id="mensajeError" class="error-text" style="color: red; font-size: 0.85rem; margin-top: 5px; min-height: 18px;"></p>
+                    <button id="btnIngresar" style="width: 100%; margin-top: 10px;">Ingresar al Catálogo</button>
+                </div>
 
-
-                <button id="btnIngresar">Ingresar</button>
+                <div id="form-admin" style="display: none;">
+                    <p style="margin-bottom: 15px;">Acceso exclusivo para personal de Eco Vintage</p>
+                    <input type="text" id="admin-user" placeholder="Usuario administrador" style="width: 100%; margin-top: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+                    <input type="password" id="admin-pass" placeholder="Contraseña de seguridad" style="width: 100%; margin-top: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+                    <p id="mensajeErrorAdmin" class="error-text" style="color: red; font-size: 0.85rem; margin-top: 5px; min-height: 18px;"></p>
+                    <button id="btnIngresarAdmin" style="width: 100%; margin-top: 10px; background: #222; color: white;">Ingresar Panel Admin</button>
+                </div>
 
             </div>
-
-        </div>
+            </div>
 
     </div>
-<script src="/js/app.js"></script>
+    <script src="/js/app.js"></script>
 </body>
-</body>
-
 </html>

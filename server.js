@@ -21,6 +21,9 @@ app.get("/carrito", (req, res) => {
 app.get("/ticket", (req, res) => {
     res.render("ticket");
 });
+app.get("/admin", (req, res) => {
+    res.render("admin");
+});
 
 app.listen(3000, () => {
     console.log("Servidor abierto en http://localhost:3000");});

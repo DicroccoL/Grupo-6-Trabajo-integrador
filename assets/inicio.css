@@ -711,3 +711,151 @@ body {
     .ticket-row-data span, .ticket-total-final, .ticket-item-row .tkt-prod-name, .ticket-item-row .tkt-prod-subtotal { color: black !important; }
     .ticket-item-row { border: 1px solid #ccc; background: none; }
 }
+
+.admin-layout {
+    max-width: 1200px;
+    margin: 130px auto 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .admin-layout { 
+        grid-template-columns: 1fr; 
+        margin-top: 110px; 
+    }
+}
+
+.admin-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: white;
+}
+
+.admin-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    color: #2563eb; /* Azul destacado Eco Vintage */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #8f8f8f;
+    font-size: 0.9rem;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px;
+    background: #171717;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.btn-admin-action {
+    width: 100%;
+    padding: 14px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-admin-action:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Tabla de Inventario de Productos */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th, .admin-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-table th {
+    color: #8f8f8f;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.admin-table td {
+    color: #ccc;
+    font-size: 0.95rem;
+}
+
+.admin-table tr:hover td {
+    background: rgba(255, 255, 255, 0.01);
+    color: white;
+}
+
+.prod-thumb {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.badge-cat {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.cat-indumentaria { background: rgba(37, 99, 235, 0.2); color: #3b82f6; }
+.cat-calzado { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 5px;
+    transition: 0.2s;
+}
+
+.btn-delete:hover {
+    color: #dc2626;
+    transform: scale(1.1);
+}

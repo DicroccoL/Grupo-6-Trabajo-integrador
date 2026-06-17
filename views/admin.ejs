@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Vintage - Panel de Control</title>
+    <link rel="stylesheet" href="/assets/inicio.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="/img/logo.png" alt="Logo">
+            <div>
+                <h1>Eco Vintage</h1>
+                <span class="admin-indicator-text">⚡ Panel de Administración</span>
+            </div>
+        </div>
+        
+        <div class="nav-actions">
+            <a href="/" class="carrito-btn" id="btn-cerrar-admin">
+                🚪 Salir del Panel
+            </a>
+            <div class="user-box">
+                <div class="avatar admin-avatar">A</div>
+                <div class="user-info">
+                    <span class="welcome">Rol Jerárquico</span>
+                    <strong>Administrador</strong>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-layout">
+        
+        <aside class="admin-card">
+            <h2>➕ Cargar Nuevo Producto</h2>
+            <form id="form-alta-producto">
+                <div class="form-group">
+                    <label for="prod-nombre">Nombre del Producto</label>
+                    <input type="text" id="prod-nombre" placeholder="Ej: Campera Denim Retro" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prod-precio">Precio ($)</label>
+                    <input type="number" id="prod-precio" placeholder="Ej: 14500" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prod-categoria">Categoría</label>
+                    <select id="prod-categoria">
+                        <option value="indumentaria">Indumentaria</option>
+                        <option value="calzado">Calzado</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prod-imagen">URL de la Imagen</label>
+                    <input type="url" id="prod-imagen" placeholder="https://images.unsplash.com/..." required>
+                </div>
+                
+                <button type="submit" class="btn-admin-action">Guardar Producto</button>
+            </form>
+        </aside>
+        <main class="admin-card">
+            <h2>📦 Productos en Catálogo</h2>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-productos">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <footer class="main-footer">
+        <p>© 2026 Eco Vintage - Grupo 6. Panel de Gestión Exclusivo.</p>
+    </footer>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

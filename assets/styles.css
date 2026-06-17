@@ -120,3 +120,38 @@
         text-align:center;
     }
 }
+.tabs-login {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.tab-item {
+    font-size: 15px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s;
+    padding-bottom: 6px;
+    font-weight: 500;
+}
+
+.tab-item:hover {
+    color: #111;
+}
+
+.error-text {
+    min-height: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Estilo para que el botón de admin se diferencie sutilmente */
+#btnIngresarAdmin {
+    background: #1e1e1e;
+}
+
+#btnIngresarAdmin:hover {
+    background: #000;
+}
