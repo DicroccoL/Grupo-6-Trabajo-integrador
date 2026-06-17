@@ -6,7 +6,7 @@ btnIngresar.addEventListener("click", () => {
 
     if (nombre) {
         localStorage.setItem("nombreUsuario", nombre);
-        window.location.href = "pages/inicio.html";
+        window.location.href = "/inicio";
     } else {
         mensajeError.textContent = "Por favor, ingrese su nombre.";
         mensajeError.classList.add("mostrar");

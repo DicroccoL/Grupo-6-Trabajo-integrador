@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const nombreGuardado = localStorage.getItem("nombreUsuario");
     if (!nombreGuardado) {
-        window.location.href = "../index.html";
+        window.location.href = "/";
         return;
     }
     document.getElementById("nombreUsuario").textContent = nombreGuardado;
@@ -83,11 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
         renderizarCarrito();
     }
     btnVolver.addEventListener("click", () => {
-        window.location.href = "inicio.html";
+        window.location.href = "/inicio";
     });
 
     btnConfirmar.addEventListener("click", () => {
-        window.location.href = "ticket.html";
+        window.location.href = "/ticket";
     });
 
     renderizarCarrito();

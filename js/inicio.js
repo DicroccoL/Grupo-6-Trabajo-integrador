@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nombreGuardado = localStorage.getItem("nombreUsuario");
 
     if (!nombreGuardado) {
-        window.location.href = "../index.html";
+        window.location.href = "/";
         return;
     }
 
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnCarrito.addEventListener("click", () => {
-        window.location.href = "carrito.html";
+        window.location.href = "/carrito";
     });
 
     mostrarProductos("indumentaria");
