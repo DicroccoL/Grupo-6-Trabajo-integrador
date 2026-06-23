@@ -1,90 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco Vintage - Panel de Control</title>
-    <link rel="stylesheet" href="/assets/inicio.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Vintage - Panel de Control</title>
+  <link rel="stylesheet" href="/assets/inicio.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand">
-            <img src="/img/logo.png" alt="Logo">
-            <div>
-                <h1>Eco Vintage</h1>
-                <span class="admin-indicator-text">⚡ Panel de Administración</span>
-            </div>
-        </div>
-        
-        <div class="nav-actions">
-            <a href="/" class="carrito-btn" id="btn-cerrar-admin">
-                🚪 Salir del Panel
-            </a>
-            <div class="user-box">
-                <div class="avatar admin-avatar">A</div>
-                <div class="user-info">
-                    <span class="welcome">Rol Jerárquico</span>
-                    <strong>Administrador</strong>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <div class="admin-layout">
-        
-        <aside class="admin-card">
-            <h2>➕ Cargar Nuevo Producto</h2>
-            <form id="form-alta-producto">
-                <div class="form-group">
-                    <label for="prod-nombre">Nombre del Producto</label>
-                    <input type="text" id="prod-nombre" placeholder="Ej: Campera Denim Retro" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="prod-precio">Precio ($)</label>
-                    <input type="number" id="prod-precio" placeholder="Ej: 14500" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="prod-categoria">Categoría</label>
-                    <select id="prod-categoria">
-                        <option value="indumentaria">Indumentaria</option>
-                        <option value="calzado">Calzado</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="prod-imagen">URL de la Imagen</label>
-                    <input type="url" id="prod-imagen" placeholder="https://images.unsplash.com/..." required>
-                </div>
-                
-                <button type="submit" class="btn-admin-action">Guardar Producto</button>
-            </form>
-        </aside>
-        <main class="admin-card">
-            <h2>📦 Productos en Catálogo</h2>
-            <div class="table-responsive">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Nombre</th>
-                            <th>Categoría</th>
-                            <th>Precio</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-productos">
-                    </tbody>
-                </table>
-            </div>
-        </main>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="/img/logo.png" alt="Logo">
+      <div>
+        <h1>Eco Vintage</h1>
+        <span class="admin-indicator-text">⚡ Panel de Administración</span>
+      </div>
     </div>
+    
+    <div class="nav-actions">
+      <a href="/admin/agregar-producto" class="carrito-btn" style="background-color: #2b7a78; color: white; text-decoration: none;">
+        ➕ Agregar Nueva Prenda
+      </a>
+      <a href="/" class="carrito-btn" id="btn-cerrar-admin">🚪 Salir del Panel</a>
+      
+      <div class="user-box">
+        <div class="avatar admin-avatar">A</div>
+        <div class="user-info">
+          <span class="welcome">Rol Jerárquico</span>
+          <strong>Administrador</strong>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-    <footer class="main-footer">
-        <p>© 2026 Eco Vintage - Grupo 6. Panel de Gestión Exclusivo.</p>
-    </footer>
+  <div class="admin-layout" style="grid-template-columns: 1fr; max-width: 600px; margin: 120px auto 20px auto;">
+    <main class="admin-card">
+      <h2>📦 Productos en Catálogo</h2>
+      
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+        <% if (productos && productos.length > 0) { %>
+          <% productos.forEach(function(prod) { %>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0;">
+              
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="/img/<%= prod.imagen %>" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400'">
+                <span><strong><%= prod.nombre %></strong> - $<%= prod.precio %></span>
+              </div>
+              
+              <form action="/admin/eliminar-producto" method="POST" onsubmit="return confirm('¿Seguro quieres borrar?')">
+                <input type="hidden" name="id" value="<%= prod.id %>">
+                <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 16px;">🗑️</button>
+              </form>
+              
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p style="text-align: center; color: #777; padding: 20px;">No hay productos cargados aún.</p>
+        <% } %>
+      </div>
+    </main>
+  </div>
 
-    <script src="/js/admin.js"></script>
+  <footer class="main-footer">
+    <p>© 2026 Eco Vintage - Grupo 6. Panel de Gestión Exclusivo.</p>
+  </footer>
+
 </body>
 </html>
