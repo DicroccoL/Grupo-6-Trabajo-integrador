@@ -4,15 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "/";
         return;
     }
+    
     document.getElementById("nombreUsuario").textContent = nombreGuardado;
     document.getElementById("avatarUsuario").textContent = nombreGuardado.charAt(0).toUpperCase();
 
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
     const contenedorItems = document.getElementById("contenedor-carrito-items");
     const totalEl = document.getElementById("carrito-total");
     const btnConfirmar = document.getElementById("btn-confirmar-carrito");
     const btnVolver = document.getElementById("btn-volver-catalogo");
+    const formatearMoneda = (valor) => `$${valor.toLocaleString('es-AR')}`;
 
     function renderizarCarrito() {
         contenedorItems.innerHTML = ""; 
@@ -39,56 +40,48 @@ document.addEventListener("DOMContentLoaded", () => {
             const itemRow = document.createElement("div");
             itemRow.className = "producto-card carrito-item"; 
 
-            itemRow.innerHTML = /*html*/`
+            itemRow.innerHTML = `
                 <div class="carrito-info">
-                    <img src="${item.img}" alt="${item.nombre}">
+                    <img src="/img/default.png" alt="${item.nombre}">
                     <div>
                         <h3>${item.nombre}</h3>
-                        <p class="precio-unitario">Precio unitario: $${item.precio.toLocaleString('es-AR')}</p>
+                        <p class="precio-unitario">Precio unitario: ${formatearMoneda(item.precio)}</p>
                     </div>
                 </div>
-
                 <div class="carrito-acciones">
                     <div class="carrito-controles">
-                        <button class="btn-restar">-</button>
+                        <button class="btn-restar" data-index="${index}">-</button>
                         <span class="cantidad-numero">${item.cantidad}</span>
-                        <button class="btn-sumar">+</button>
+                        <button class="btn-sumar" data-index="${index}">+</button>
                     </div>
-                    
-                    <p class="precio-subtotal">
-                        $${subtotal.toLocaleString('es-AR')}
-                    </p>
+                    <p class="precio-subtotal">${formatearMoneda(subtotal)}</p>
                 </div>
             `;
-            itemRow.querySelector(".btn-restar").addEventListener("click", () => alterarCantidad(index, -1));
-            itemRow.querySelector(".btn-sumar").addEventListener("click", () => alterarCantidad(index, 1));
-
             contenedorItems.appendChild(itemRow);
         });
 
-        totalEl.textContent = `$${totalGeneral.toLocaleString('es-AR')}`;
+        totalEl.textContent = formatearMoneda(totalGeneral);
         btnConfirmar.disabled = false;
     }
 
+    contenedorItems.addEventListener("click", (e) => {
+        const index = e.target.getAttribute("data-index");
+        if (index === null) return;
 
-    function alterarCantidad(index, cambio) {
-        carrito[index].cantidad += cambio;
-
-    
-        if (carrito[index].cantidad <= 0) {
-            carrito.splice(index, 1);
+        const idx = parseInt(index);
+        if (e.target.classList.contains("btn-sumar")) {
+            carrito[idx].cantidad += 1;
+        } else if (e.target.classList.contains("btn-restar")) {
+            carrito[idx].cantidad -= 1;
+            if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
         }
+
         localStorage.setItem("carrito", JSON.stringify(carrito));
-        
         renderizarCarrito();
-    }
-    btnVolver.addEventListener("click", () => {
-        window.location.href = "/inicio";
     });
 
-    btnConfirmar.addEventListener("click", () => {
-        window.location.href = "/ticket";
-    });
+    btnVolver.addEventListener("click", () => window.location.href = "/inicio");
+    btnConfirmar.addEventListener("click", () => window.location.href = "/ticket");
 
     renderizarCarrito();
 });
