@@ -8,18 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnIngresar = document.getElementById("btnIngresar");
     const mensajeError = document.getElementById("mensajeError");
 
-
     const btnIngresarAdmin = document.getElementById("btnIngresarAdmin");
     const mensajeErrorAdmin = document.getElementById("mensajeErrorAdmin");
     const inputAdminUser = document.getElementById("admin-user");
     const inputAdminPass = document.getElementById("admin-pass");
 
-
     tabCliente.addEventListener("click", () => {
         formCliente.style.display = "block";
         formAdmin.style.display = "none";
         
-
         tabCliente.style.color = "#111";
         tabCliente.style.fontWeight = "bold";
         tabCliente.style.borderBottom = "2px solid #111";
@@ -33,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
         formCliente.style.display = "none";
         formAdmin.style.display = "block";
         
-
         tabAdmin.style.color = "#111";
         tabAdmin.style.fontWeight = "bold";
         tabAdmin.style.borderBottom = "2px solid #111";
@@ -55,11 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
             mensajeError.classList.add("mostrar");
         }
     });
+
     document.getElementById("nombre").addEventListener("input", () => {
         mensajeError.textContent = "";
     });
-    //ES TEMPORAL SIN BASE DE DATOS
-    btnIngresarAdmin.addEventListener("click", () => {
+    btnIngresarAdmin.addEventListener("click", async () => {
         const usuario = inputAdminUser.value.trim();
         const contrasenia = inputAdminPass.value.trim();
 
@@ -68,13 +64,27 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        try {
+            const respuesta = await fetch("/login-admin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ usuario, contrasenia })
+            });
 
-        if (usuario === "admin" && contrasenia === "1234") {
-            localStorage.setItem("nombreUsuario", "Administrador");
-            localStorage.setItem("esAdmin", "true");
-            window.location.href = "/admin";
-        } else {
-            mensajeErrorAdmin.textContent = "Usuario o contraseña incorrectos.";
+            const resultado = await respuesta.json();
+
+            if (respuesta.ok && resultado.success) {
+                localStorage.setItem("nombreUsuario", resultado.nombre || "Administrador");
+                localStorage.setItem("esAdmin", "true");
+                window.location.href = "/admin";
+            } else {
+                mensajeErrorAdmin.textContent = resultado.message || "Usuario o contraseña incorrectos.";
+            }
+        } catch (error) {
+            console.error("Error en la conexión con el servidor:", error);
+            mensajeErrorAdmin.textContent = "Error de conexión con el servidor.";
         }
     });
 

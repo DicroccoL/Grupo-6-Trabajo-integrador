@@ -16,9 +16,36 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/js", express.static(path.join(__dirname, "js")));
 app.use("/img", express.static(path.join(__dirname, "img")));
+
 app.get("/", (req, res) => res.render("index"));
 app.get("/carrito", (req, res) => res.render("carrito"));
 app.get("/ticket", (req, res) => res.render("ticket"));
+
+app.post("/login-admin", async (req, res) => {
+  const { usuario, contrasenia } = req.body;
+
+  try {
+    if (!usuario || !contrasenia) {
+      throw new Error();
+    }
+    const [rows] = await pool.query(
+      "SELECT * FROM admins WHERE username = ? AND password = ?", 
+      [usuario, contrasenia]
+    );
+
+    if (rows.length > 0) {
+      const adminLogueado = rows[0];
+      return res.json({ 
+        success: true, 
+        nombre: adminLogueado.username 
+      });
+    } else {
+      throw new Error();
+    }
+  } catch (error) {
+    return res.status(400).json({ success: false, message: "Error" });
+  }
+});
 
 app.get("/inicio", async (req, res) => {
   const [productos] = await pool.query("SELECT * FROM products");
@@ -50,6 +77,7 @@ app.post("/admin/eliminar-producto", async (req, res) => {
   await pool.query("DELETE FROM products WHERE id = ?", [id]);
   res.redirect("/admin");
 });
+
 app.post("/ticket/download", async (req, res) => {
   const { nombreUsuario, ticketId, fecha, productos, total } = req.body;
   app.render("ticket", { nombreUsuario, ticketId, fecha, productos, total, isPdf: true }, async (err, html) => {
