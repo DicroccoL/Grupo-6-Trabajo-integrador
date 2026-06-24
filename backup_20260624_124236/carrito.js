@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnConfirmar.addEventListener("click", () => {
         const carritoFormateado = carrito.map(item => ({
             id: item.id,
+            node_modules_id: item.id, 
             cantidad: item.cantidad
         }));
 
@@ -106,16 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Error al procesar la compra: " + data.error);
                 btnConfirmar.disabled = false;
             } else {
-                const ticketData = {
-                    nombreUsuario: nombreGuardado,
-                    ticketId: data.orderId,
-                    fecha: data.fecha || new Date().toLocaleString('es-AR'),
-                    productos: carrito,
-                    total: data.total,
-                    theme: localStorage.getItem('theme') || 'dark'
-                };
-                sessionStorage.setItem("ticketData", JSON.stringify(ticketData));
-                window.location.href = "/ticket";
+                alert("¡Compra realizada con éxito!");
+                localStorage.removeItem("carrito"); 
+                window.location.href = "/ticket";  
             }
         })
         .catch(err => {

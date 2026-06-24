@@ -39,12 +39,12 @@
       
       <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
         <% if (productos && productos.length > 0) { %>
-          <% productos.forEach(function(prod) { %>
+          <% productos.filter(p => p.activo).forEach(function(prod) { %>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0;">
               
               <div style="display: flex; align-items: center; gap: 10px;">
-                <img src="/img/<%= prod.imagen %>" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400'">
-                <span><strong><%= prod.nombre %></strong> - $<%= prod.precio %></span>
+                <img src="/img/<%= prod.imagen_url || prod.imagen %>" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400'">
+                <span><strong><%= prod.nombre %></strong> - $<%= prod.precio %> <small style="color:#888; margin-left:8px;">(<%= prod.categoria || 'General' %>)</small></span>
               </div>
               
               <form action="/admin/eliminar-producto" method="POST" onsubmit="return confirm('¿Seguro quieres borrar?')">

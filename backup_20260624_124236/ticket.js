@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const ticketData = JSON.parse(sessionStorage.getItem("ticketData") || null);
-    if (!ticketData || !ticketData.productos || ticketData.productos.length === 0) {
+    const nombreUsuario = localStorage.getItem("nombreUsuario") || "Consumidor Final";
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    if (carrito.length === 0) {
         window.location.href = "/inicio";
         return;
     }
 
-    const nombreUsuario = ticketData.nombreUsuario || "Consumidor Final";
     document.getElementById("nombreUsuario").textContent = nombreUsuario;
     document.getElementById("avatarUsuario").textContent = nombreUsuario.charAt(0).toUpperCase();
 
@@ -16,18 +17,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const txtTotal = document.getElementById("ticket-total-monto");
 
     txtCliente.textContent = nombreUsuario;
-    txtFecha.textContent = ticketData.fecha || new Date().toLocaleString("es-AR");
-    txtId.textContent = ticketData.ticketId || Math.floor(100000 + Math.random() * 900000);
+    
+    const ahora = new Date();
+    txtFecha.textContent = ahora.toLocaleString("es-AR");
+
+    if (!sessionStorage.getItem("ticketId")) {
+        sessionStorage.setItem("ticketId", Math.floor(100000 + Math.random() * 900000));
+    }
+    txtId.textContent = sessionStorage.getItem("ticketId");
 
     let totalGeneral = 0;
-    contenedorProductos.innerHTML = "";
+    contenedorProductos.innerHTML = ""; 
 
-    ticketData.productos.forEach(item => {
+    carrito.forEach(item => {
         const subtotal = item.precio * item.cantidad;
         totalGeneral += subtotal;
 
         const fila = document.createElement("div");
-        fila.className = "ticket-item-row";
+        fila.className = "ticket-item-row"; 
         fila.innerHTML = `
             <span class="tkt-prod-name">${item.cantidad}x ${item.nombre}</span>
             <span class="tkt-prod-subtotal">$${subtotal.toLocaleString("es-AR")}</span>
@@ -35,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedorProductos.appendChild(fila);
     });
 
-    txtTotal.textContent = `$${(ticketData.total || totalGeneral).toLocaleString("es-AR")}`;
+    txtTotal.textContent = `$${totalGeneral.toLocaleString("es-AR")}`;
 
     const btnDescargarPdf = document.getElementById("btn-descargar-pdf");
     if (btnDescargarPdf) {
@@ -43,12 +50,19 @@ document.addEventListener("DOMContentLoaded", () => {
             btnDescargarPdf.textContent = "⌛ Generando PDF...";
             btnDescargarPdf.disabled = true;
 
+            const datosCompra = {
+                nombreUsuario: nombreUsuario,
+                ticketId: sessionStorage.getItem("ticketId"),
+                fecha: txtFecha.textContent,
+                productos: carrito,
+                total: totalGeneral 
+            };
+
             try {
-                const payload = { ...ticketData, theme: localStorage.getItem('theme') || 'dark' };
                 const response = await fetch("/ticket/download", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(datosCompra)
                 });
 
                 if (!response.ok) throw new Error("Error en la descarga");
@@ -57,13 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = `Ticket_Eco_Vintage_${ticketData.ticketId}.pdf`;
+                a.download = `Ticket_Eco_Vintage_${datosCompra.ticketId}.pdf`;
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
 
                 localStorage.removeItem("carrito");
-                sessionStorage.removeItem("ticketData");
+                sessionStorage.removeItem("ticketId");
+                
             } catch (err) {
                 alert("No se pudo generar el PDF, intente de nuevo.");
                 console.error(err);
@@ -78,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnVolverInicio) {
         btnVolverInicio.addEventListener("click", () => {
             localStorage.removeItem("carrito");
-            sessionStorage.removeItem("ticketData");
+            sessionStorage.removeItem("ticketId");
         });
     }
 });

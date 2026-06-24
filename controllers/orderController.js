@@ -50,7 +50,7 @@ exports.createOrder = async (req, res) => {
     }
 
     await t.commit(); 
-    res.status(201).json({ mensaje: 'Compra realizada con éxito', orderId: nuevaOrden.id, total });
+    res.status(201).json({ mensaje: 'Compra realizada con éxito', orderId: nuevaOrden.id, total, fecha: nuevaOrden.fecha });
 
   } catch (error) {
     await t.rollback(); 

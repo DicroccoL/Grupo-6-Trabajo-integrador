@@ -125,10 +125,10 @@ app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
 });
 
 app.post("/ticket/download", async (req, res) => {
-  const { nombreUsuario, ticketId, fecha, productos, total } = req.body;
+  const { nombreUsuario, ticketId, fecha, productos, total, theme } = req.body;
   try {
     console.log("Procesando orden para:", nombreUsuario);
-    app.render("ticket", { nombreUsuario, ticketId, fecha, productos, total, isPdf: true }, async (err, html) => {
+    app.render("ticket", { nombreUsuario, ticketId, fecha, productos, total, isPdf: true, theme }, async (err, html) => {
       if (err) throw err;
       const browser = await puppeteer.launch({ headless: true });
       const page = await browser.newPage();

@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-    const btnTodos = document.getElementById("btn-todos");
     const btnIndumentaria = document.getElementById("btn-indumentaria");
     const btnCalzado = document.getElementById("btn-calzado");
     const contadorCarrito = document.getElementById("contador-carrito");
@@ -58,8 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const producto = {
                     id: parseInt(boton.getAttribute("data-id")),
                     nombre: boton.getAttribute("data-nombre"),
-                    precio: parseFloat(boton.getAttribute("data-precio")),
-                    categoria: boton.getAttribute("data-categoria") || "General"
+                    precio: parseFloat(boton.getAttribute("data-precio"))
                 };
                 
                 agregarAlCarrito(producto);
@@ -67,37 +65,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function actualizarFiltro(activo) {
-        [btnTodos, btnIndumentaria, btnCalzado].forEach(btn => {
-            if (!btn) return;
-            btn.classList.toggle("activo", btn === activo);
-        });
-    }
-
-    function filtrarProductos(categoria) {
-        const cards = document.querySelectorAll(".producto-card");
-        cards.forEach(card => {
-            const categoriaProducto = card.dataset.categoria || "General";
-            if (categoria === "Todos" || categoriaProducto === categoria) {
-                card.style.display = "flex";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    }
-
-    if (btnTodos && btnIndumentaria && btnCalzado) {
-        btnTodos.addEventListener("click", () => {
-            actualizarFiltro(btnTodos);
-            filtrarProductos("Todos");
-        });
+    if (btnIndumentaria && btnCalzado) {
         btnIndumentaria.addEventListener("click", () => {
-            actualizarFiltro(btnIndumentaria);
-            filtrarProductos("Indumentaria");
+            btnIndumentaria.classList.add("activo");
+            btnCalzado.classList.remove("activo");
         });
+
         btnCalzado.addEventListener("click", () => {
-            actualizarFiltro(btnCalzado);
-            filtrarProductos("Calzado");
+            btnCalzado.classList.add("activo");
+            btnIndumentaria.classList.remove("activo");
         });
     }
 

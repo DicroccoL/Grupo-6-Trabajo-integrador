@@ -3,73 +3,9 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-/* Ensure default text is readable in dark theme */
-body.theme-dark {
-    color: #ffffff;
-}
-
-body.theme-light {
-    background: #f7f7f7;
-    color: #111;
-}
-
-body.theme-light .navbar {
-    background: rgba(255,255,255,0.95);
-    border-color: rgba(0,0,0,0.08);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
-
-body.theme-light .nav-brand h1,
-body.theme-light .nav-brand span,
-body.theme-light .avatar,
-body.theme-light .user-info strong,
-body.theme-light .welcome {
-    color: #111;
-}
-
-body.theme-light .user-box .avatar {
-    background: #111;
-}
-
-body.theme-light .carrito-btn {
-    background: #e5e7eb;
-    color: #111;
-}
-
-body.theme-light .carrito-btn:hover {
-    background: #2563eb;
-    color: white;
-}
-
-body.theme-light .productos-grid,
-body.theme-light .ticket-panel,
-body.theme-light .ticket-card-box,
-body.theme-light .producto-card {
-    background: #ffffff;
-    border-color: rgba(0,0,0,0.08);
-}
-
-body.theme-light .producto-card h3,
-body.theme-light .producto-card .precio,
-body.theme-light .ticket-panel h2,
-body.theme-light .total-fila,
-body.theme-light .carrito-info h3,
-body.theme-light .precio-unitario,
-body.theme-light .precio-subtotal {
-    color: #111;
-}
-
-body.theme-light .ticket-panel {
-    color: #111;
-}
-
-body.theme-light .btn-finalizar {
-    background: #111;
 }
 .navbar{
     height: 80px;
@@ -266,53 +202,16 @@ body.theme-light .btn-finalizar {
 
 .producto-card img {
     width: 100%;
-    height: 200px;
-    max-height: 260px;
-    object-fit: contain;
+    height: 140px;
+    object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
-    display: block;
-    background: #f7f7f7;
-    padding: 8px;
-}
-
-/* Slightly different background for dark theme so images don't look harsh */
-body.theme-dark .producto-card img {
-    background: rgba(255,255,255,0.03);
 }
 
 .producto-card h3 {
     color: white;
     font-size: 1rem;
     margin-bottom: 5px;
-}
-
-/* Ensure legible text in dark mode */
-body.theme-dark .producto-card h3,
-body.theme-dark .producto-card .precio,
-body.theme-dark .producto-card .categoria,
-body.theme-dark .ticket-card-box,
-body.theme-dark .ticket-row-data,
-body.theme-dark .ticket-item-row,
-body.theme-dark .ticket-total-final,
-body.theme-dark .ticket-panel h2 {
-    color: #ffffff !important;
-}
-
-/* Make generic paragraph and small text white in dark mode */
-body.theme-dark p,
-body.theme-dark span,
-body.theme-dark small,
-body.theme-dark strong {
-    color: #ffffff !important;
-}
-
-/* Improve ticket contrast generally */
-.ticket-card-box {
-    background: #0e0e0e;
-    color: #fff;
-    border-radius: 12px;
-    padding: 20px;
 }
 
 .producto-card .precio {
