@@ -33,31 +33,67 @@
     </div>
   </nav>
 
-  <div class="admin-layout" style="grid-template-columns: 1fr; max-width: 600px; margin: 120px auto 20px auto;">
+  <div class="admin-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 120px auto 20px auto; padding: 0 20px;">
+    
     <main class="admin-card">
       <h2>📦 Productos en Catálogo</h2>
-      
       <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
         <% if (productos && productos.length > 0) { %>
           <% productos.filter(p => p.activo).forEach(function(prod) { %>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0;">
-              
               <div style="display: flex; align-items: center; gap: 10px;">
                 <img src="/img/<%= prod.imagen_url || prod.imagen %>" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400'">
-                <span><strong><%= prod.nombre %></strong> - $<%= prod.precio %> <small style="color:#888; margin-left:8px;">(<%= prod.categoria || 'General' %>)</small></span>
+                <span><strong><%= prod.nombre %></strong> - $<%= prod.precio %></span>
               </div>
               
-              <form action="/admin/eliminar-producto" method="POST" onsubmit="return confirm('¿Seguro quieres borrar?')">
-                <input type="hidden" name="id" value="<%= prod.id %>">
-                <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 16px;">🗑️</button>
-              </form>
-              
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <a href="/admin/editar-producto/<%= prod.id %>" 
+                   id="btn-modificar-<%= prod.id %>" 
+                   data-id="<%= prod.id %>" 
+                   style="text-decoration: none; font-size: 1.15rem; color: inherit;"
+                   title="Editar producto">✏️</a>
+                
+                <form action="/admin/eliminar-producto" method="POST" onsubmit="return confirm('¿Seguro quieres borrar?')">
+                  <input type="hidden" name="id" value="<%= prod.id %>">
+                  <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 16px; padding: 0;">🗑️</button>
+                </form>
+              </div>
             </div>
           <% }); %>
         <% } else { %>
-          <p style="text-align: center; color: #777; padding: 20px;">No hay productos cargados aún.</p>
+          <p style="text-align: center; color: #777; padding: 20px;">No hay productos cargados.</p>
         <% } %>
       </div>
+    </main>
+
+    <main class="admin-card">
+      <h2>📊 Últimas 10 Ventas</h2>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em;">
+        <thead>
+          <tr style="text-align: left; border-bottom: 2px solid #ddd;">
+            <th style="padding: 8px;">ID</th>
+            <th style="padding: 8px;">Cliente</th>
+            <th style="padding: 8px;">Productos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (typeof ventas !== 'undefined' && ventas.length > 0) { %>
+            <% ventas.forEach(venta => { %>
+              <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 8px;">#<%= venta.id %></td>
+                <td style="padding: 8px;"><%= venta.nombreUsuario || 'Cliente' %></td>
+                <td style="padding: 8px;">
+                  <% venta.items.forEach(item => { %>
+                    <small><%= item.Product ? item.Product.nombre : 'Producto' %></small><br>
+                  <% }) %>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="3" style="text-align: center; padding: 20px;">Sin ventas recientes.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
     </main>
   </div>
 

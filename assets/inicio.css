@@ -195,7 +195,7 @@ body.theme-light .btn-finalizar {
 .totem-container {
     display: flex;
     flex: 1;
-    margin: 10px 20px 20px 20px;
+    margin: 120px 20px 20px 20px;
     gap: 20px;
     overflow: hidden;
 }

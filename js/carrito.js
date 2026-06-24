@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             itemRow.innerHTML = `
                 <div class="carrito-info">
-                    <img src="/img/default.png" alt="${item.nombre}">
                     <div>
                         <h3>${item.nombre}</h3>
                         <p class="precio-unitario">Precio unitario: ${formatearMoneda(item.precio)}</p>

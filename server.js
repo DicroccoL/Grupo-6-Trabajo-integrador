@@ -43,7 +43,7 @@ function verificarAdminNativo(req, res, next) {
 
 app.get("/", (req, res) => res.render("index"));
 app.get("/carrito", (req, res) => res.render("carrito"));
-app.get("/ticket", (req, res) => res.render("ticket"));
+app.get("/ticket", (req, res) => res.render("ticket", { isPdf: false }));
 
 app.post("/login-admin", async (req, res) => {
   const { usuario, contrasenia } = req.body;
@@ -79,8 +79,20 @@ app.get("/inicio", async (req, res) => {
 app.get("/admin", verificarAdminNativo, async (req, res) => {
   try {
     const productos = await Product.findAll(); 
-    res.render("admin", { productos: productos });
+    
+    const ultimasVentas = await Order.findAll({
+      limit: 10,
+      order: [['fecha', 'DESC']],
+      include: [{ 
+        model: OrderItem, 
+        as: 'items',
+        include: [Product]
+      }]
+    });
+
+    res.render("admin", { productos: productos, ventas: ultimasVentas });
   } catch (error) {
+    console.error('Error en /admin:', error);
     res.status(500).send("Error al cargar el panel de administración");
   }
 });
@@ -107,6 +119,43 @@ app.post("/admin/agregar-producto", verificarAdminNativo, upload.single("imagen"
   }
 });
 
+app.get("/admin/editar-producto/:id", verificarAdminNativo, async (req, res) => {
+  try {
+    const producto = await Product.findByPk(req.params.id);
+    if (!producto) return res.status(404).send("Producto no encontrado");
+    
+    res.render("agregar_carrito", { 
+      producto: producto, 
+      esEdicion: true 
+    });
+  } catch (error) {
+    res.status(500).send("Error al obtener los datos del producto");
+  }
+});
+app.post("/admin/editar-producto/:id", verificarAdminNativo, upload.single("imagen"), async (req, res) => {
+  try {
+    const producto = await Product.findByPk(req.params.id);
+    if (!producto) return res.status(404).send("Producto no encontrado");
+
+    const { nombre, precio, stock, descripcion, categoria } = req.body;
+    
+    const imagen_url = req.file ? req.file.filename : producto.imagen_url;
+
+    await producto.update({
+      nombre,
+      precio,
+      stock,
+      descripcion,
+      categoria,
+      imagen_url
+    });
+
+    res.redirect("/admin"); 
+  } catch (error) {
+    res.status(500).send("Error al actualizar el producto");
+  }
+});
+
 app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
   const { id } = req.body;
   try {
@@ -120,6 +169,7 @@ app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
   }
 });
 
+
 app.post("/ticket/download", async (req, res) => {
   const { nombreUsuario, ticketId, fecha, productos, total, theme } = req.body;
   try {
@@ -130,7 +180,8 @@ app.post("/ticket/download", async (req, res) => {
       
       await page.emulateMediaType("screen");
       
-      await page.setContent(html, { waitUntil: "networkidle0" });
+      const portForPdf = process.env.PORT || 3000;
+      await page.setContent(html, { waitUntil: "networkidle0", url: `http://localhost:${portForPdf}/` });
       const pdfBuffer = await page.pdf({
         format: "A4",
         printBackground: true,
