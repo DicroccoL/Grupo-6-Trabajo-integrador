@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const ticketData = JSON.parse(sessionStorage.getItem("ticketData") || null);
+    
     if (!ticketData || !ticketData.productos || ticketData.productos.length === 0) {
-        window.location.href = "/inicio";
+        window.location.href = "/";
         return;
     }
 
@@ -76,9 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btnVolverInicio = document.getElementById("btn-volver-inicio");
     if (btnVolverInicio) {
-        btnVolverInicio.addEventListener("click", () => {
+        btnVolverInicio.addEventListener("click", (e) => {
+            e.preventDefault(); 
             localStorage.removeItem("carrito");
             sessionStorage.removeItem("ticketData");
+            window.location.href = "/";
         });
     }
 });

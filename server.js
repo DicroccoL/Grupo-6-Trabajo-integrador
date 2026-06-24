@@ -12,7 +12,6 @@ const Order = require("./models/order");
 const OrderItem = require("./models/OrderItem");
 const apiRoutes = require("./routes/api");
 
-// Configurar asociaciones
 Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'items' });
 OrderItem.belongsTo(Order, { foreignKey: 'order_id' });
 OrderItem.belongsTo(Product, { foreignKey: 'product_id' });
@@ -62,7 +61,6 @@ app.post("/login-admin", async (req, res) => {
       return res.status(400).json({ success: false, message: "Usuario o contraseña incorrectos" });
     }
   } catch (error) {
-    console.error("ERROR REAL EN EL LOGIN:", error.message); 
     return res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 });
@@ -105,7 +103,6 @@ app.post("/admin/agregar-producto", verificarAdminNativo, upload.single("imagen"
     });
     res.redirect("/admin");
   } catch (error) {
-    console.error("ERROR AL INSERTAR PRODUCTO EN SEQUELIZE:", error);
     res.status(500).send("Error al guardar el producto en la base de datos");
   }
 });
@@ -119,7 +116,6 @@ app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
     );
     res.redirect("/admin");
   } catch (error) {
-    console.error("Error al dar de baja el producto con Sequelize:", error);
     res.status(500).send("Error al eliminar el producto");
   }
 });
@@ -127,11 +123,13 @@ app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
 app.post("/ticket/download", async (req, res) => {
   const { nombreUsuario, ticketId, fecha, productos, total, theme } = req.body;
   try {
-    console.log("Procesando orden para:", nombreUsuario);
     app.render("ticket", { nombreUsuario, ticketId, fecha, productos, total, isPdf: true, theme }, async (err, html) => {
       if (err) throw err;
       const browser = await puppeteer.launch({ headless: true });
       const page = await browser.newPage();
+      
+      await page.emulateMediaType("screen");
+      
       await page.setContent(html, { waitUntil: "networkidle0" });
       const pdfBuffer = await page.pdf({
         format: "A4",
@@ -144,15 +142,13 @@ app.post("/ticket/download", async (req, res) => {
       res.send(pdfBuffer);
     });
   } catch (error) {
-    console.error("Error en el proceso de ticket:", error);
     res.status(500).send("Error al procesar la compra.");
   }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor abierto en http://localhost:${PORT}`);
   sequelize.authenticate()
-    .then(() => console.log("Conexión Exitosa a la base de datos con Sequelize ORM"))
-    .catch(err => console.error("No se pudo conectar a la base de datos:", err));
+    .then(() => {})
+    .catch(err => console.error(err));
 });
