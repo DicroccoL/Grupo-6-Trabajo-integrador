@@ -4,7 +4,11 @@ const path = require("path");
 const puppeteer = require("puppeteer");
 const multer = require("multer");
 const app = express();
-const pool = require("./config/db");
+
+const sequelize = require("./config/db"); 
+const Admin = require("./models/Admin");
+const Product = require("./models/Product");
+
 const upload = multer({ dest: path.join(__dirname, "img") });
 
 app.set("view engine", "ejs");
@@ -17,6 +21,16 @@ app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/js", express.static(path.join(__dirname, "js")));
 app.use("/img", express.static(path.join(__dirname, "img")));
 
+let adminAutenticado = false; 
+
+function verificarAdminNativo(req, res, next) {
+  if (adminAutenticado) {
+    return next();
+  } else {
+    return res.redirect("/"); 
+  }
+}
+
 app.get("/", (req, res) => res.render("index"));
 app.get("/carrito", (req, res) => res.render("carrito"));
 app.get("/ticket", (req, res) => res.render("ticket"));
@@ -26,75 +40,121 @@ app.post("/login-admin", async (req, res) => {
 
   try {
     if (!usuario || !contrasenia) {
-      throw new Error();
+      return res.status(400).json({ success: false, message: "Campos vacíos" });
     }
-    const [rows] = await pool.query(
-      "SELECT * FROM admins WHERE username = ? AND password = ?", 
-      [usuario, contrasenia]
-    );
 
-    if (rows.length > 0) {
-      const adminLogueado = rows[0];
+    const adminLogueado = await Admin.findOne({
+      where: {
+        username: usuario,
+        password: contrasenia
+      }
+    });
+
+    if (adminLogueado) {
+      adminAutenticado = true; 
       return res.json({ 
         success: true, 
         nombre: adminLogueado.username 
       });
     } else {
-      throw new Error();
+      return res.status(400).json({ success: false, message: "Usuario o contraseña incorrectos" });
     }
   } catch (error) {
-    return res.status(400).json({ success: false, message: "Error" });
+    console.error("ERROR REAL EN EL LOGIN:", error.message); 
+    return res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 });
 
 app.get("/inicio", async (req, res) => {
-  const [productos] = await pool.query("SELECT * FROM products");
-  res.render("inicio", { productos: productos });
+  try {
+    const productos = await Product.findAll();
+    res.render("inicio", { productos: productos });
+  } catch (error) {
+    res.status(500).send("Error al cargar los productos");
+  }
 });
 
-app.get("/admin", async (req, res) => {
-  const [productos] = await pool.query("SELECT * FROM products");
-  res.render("admin", { productos: productos });
+app.get("/admin", verificarAdminNativo, async (req, res) => {
+  try {
+    const productos = await Product.findAll();
+    res.render("admin", { productos: productos });
+  } catch (error) {
+    res.status(500).send("Error al cargar el panel de administración");
+  }
 });
 
-app.get("/admin/agregar-producto", (req, res) => {
+app.get("/admin/agregar-producto", verificarAdminNativo, (req, res) => {
   res.render("agregar_carrito");
 });
 
-app.post("/admin/agregar-producto", upload.single("imagen"), async (req, res) => {
-  const { nombre, precio, descripcion, stock } = req.body;
+app.post("/admin/agregar-producto", verificarAdminNativo, upload.single("imagen"), async (req, res) => {
+  const { nombre, precio, descripcion, stock, categoria } = req.body;
   const imagenNombre = req.file ? req.file.filename : "default.png";
 
-  await pool.query(
-    "INSERT INTO products (nombre, precio, descripcion, stock, imagen) VALUES (?, ?, ?, ?, ?)",
-    [nombre, precio, descripcion, stock, imagenNombre]
-  );
-  res.redirect("/admin");
+  try {
+    await Product.create({
+      nombre: nombre,
+      precio: precio,
+      descripcion: descripcion,
+      stock: stock,
+      imagen_url: imagenNombre,
+      categoria: categoria || "General"
+    });
+    
+    res.redirect("/admin");
+  } catch (error) {
+    console.error("ERROR AL INSERTAR PRODUCTO EN SEQUELIZE:", error);
+    res.status(500).send("Error al guardar el producto en la base de datos");
+  }
 });
 
-app.post("/admin/eliminar-producto", async (req, res) => {
+app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
   const { id } = req.body;
-  await pool.query("DELETE FROM products WHERE id = ?", [id]);
-  res.redirect("/admin");
+  try {
+    await Product.destroy({
+      where: { id: id }
+    });
+    res.redirect("/admin");
+  } catch (error) {
+    console.error("Error al eliminar producto con Sequelize:", error);
+    res.status(500).send("Error al eliminar el producto");
+  }
 });
 
 app.post("/ticket/download", async (req, res) => {
   const { nombreUsuario, ticketId, fecha, productos, total } = req.body;
-  app.render("ticket", { nombreUsuario, ticketId, fecha, productos, total, isPdf: true }, async (err, html) => {
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      margin: { top: "20px", bottom: "20px", left: "20px", right: "20px" }
+
+  try {
+
+    console.log("Procesando orden para:", nombreUsuario);
+
+    app.render("ticket", { nombreUsuario, ticketId, fecha, productos, total, isPdf: true }, async (err, html) => {
+      if (err) throw err;
+      const browser = await puppeteer.launch({ headless: true });
+      const page = await browser.newPage();
+      await page.setContent(html, { waitUntil: "networkidle0" });
+      const pdfBuffer = await page.pdf({
+        format: "A4",
+        printBackground: true,
+        margin: { top: "20px", bottom: "20px", left: "20px", right: "20px" }
+      });
+      await browser.close();
+      
+      res.contentType("application/pdf");
+      res.setHeader("Content-Disposition", `attachment; filename=ticket_eco_vintage_${ticketId}.pdf`);
+      res.send(pdfBuffer);
     });
-    await browser.close();
-    res.contentType("application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename=ticket_eco_vintage_${ticketId}.pdf`);
-    res.send(pdfBuffer);
-  });
+  } catch (error) {
+    console.error("Error en el proceso de ticket:", error);
+    res.status(500).send("Error al procesar la compra.");
+  }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor abierto en http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Servidor abierto en http://localhost:${PORT}`);
+  // Sincroniza y verifica la conexión de Sequelize al iniciar
+  sequelize.authenticate()
+    .then(() => console.log("Conexión Exitosa a la base de datos con Sequelize ORM"))
+    .catch(err => console.error("No se pudo conectar a la base de datos:", err));
+});

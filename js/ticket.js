@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ticketId: sessionStorage.getItem("ticketId"),
                 fecha: txtFecha.textContent,
                 productos: carrito,
-                total: txtTotal.textContent
+                total: totalGeneral 
             };
 
             try {
@@ -75,6 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
+
+                localStorage.removeItem("carrito");
+                sessionStorage.removeItem("ticketId");
                 
             } catch (err) {
                 alert("No se pudo generar el PDF, intente de nuevo.");

@@ -43,7 +43,7 @@
         <% if (productos && productos.length > 0) { %>
             <% productos.forEach(producto => { %>
                 <div class="producto-card">
-                    <img src="<%= producto.imagen_url || '/img/default.png' %>" alt="<%= producto.nombre %>">
+                    <img src="/img/<%= producto.imagen_url %>" alt="<%= producto.nombre %>" onerror="this.onerror=null; this.src='/img/default.png';">
                     <h3><%= producto.nombre %></h3>
                     <p class="categoria"><%= producto.categoria %></p>
                     <p class="precio">$<%= producto.precio %></p>
