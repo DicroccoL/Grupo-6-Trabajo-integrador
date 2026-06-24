@@ -1,3 +1,4 @@
+// models/Product.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
@@ -8,7 +9,8 @@ const Product = sequelize.define('Product', {
   descripcion: { type: DataTypes.TEXT, allowNull: true },
   stock: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
   imagen_url: { type: DataTypes.STRING, allowNull: true },
-  categoria: { type: DataTypes.STRING, allowNull: true }
+  categoria: { type: DataTypes.STRING, allowNull: true },
+  activo: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true } 
 }, {
   tableName: 'products', 
   timestamps: false     

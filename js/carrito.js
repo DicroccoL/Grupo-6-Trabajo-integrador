@@ -81,7 +81,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnVolver.addEventListener("click", () => window.location.href = "/inicio");
-    btnConfirmar.addEventListener("click", () => window.location.href = "/ticket");
+
+    btnConfirmar.addEventListener("click", () => {
+        const carritoFormateado = carrito.map(item => ({
+            id: item.id,
+            node_modules_id: item.id, 
+            cantidad: item.cantidad
+        }));
+
+        const datosCompra = {
+            nombre_cliente: nombreGuardado,
+            carrito: carritoFormateado
+        };
+
+        btnConfirmar.disabled = true; 
+
+        fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosCompra)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                alert("Error al procesar la compra: " + data.error);
+                btnConfirmar.disabled = false;
+            } else {
+                alert("¡Compra realizada con éxito!");
+                localStorage.removeItem("carrito"); 
+                window.location.href = "/ticket";  
+            }
+        })
+        .catch(err => {
+            console.error("Error en el checkout:", err);
+            alert("Hubo un problema de conexión.");
+            btnConfirmar.disabled = false;
+        });
+    });
 
     renderizarCarrito();
 });

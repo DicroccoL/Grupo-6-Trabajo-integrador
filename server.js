@@ -8,6 +8,15 @@ const app = express();
 const sequelize = require("./config/db"); 
 const Admin = require("./models/Admin");
 const Product = require("./models/Product");
+const Order = require("./models/order");
+const OrderItem = require("./models/OrderItem");
+const apiRoutes = require("./routes/api");
+
+// Configurar asociaciones
+Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'items' });
+OrderItem.belongsTo(Order, { foreignKey: 'order_id' });
+OrderItem.belongsTo(Product, { foreignKey: 'product_id' });
+Product.hasMany(OrderItem, { foreignKey: 'product_id' });
 
 const upload = multer({ dest: path.join(__dirname, "img") });
 
@@ -20,6 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/js", express.static(path.join(__dirname, "js")));
 app.use("/img", express.static(path.join(__dirname, "img")));
+
+app.use("/api", apiRoutes); 
 
 let adminAutenticado = false; 
 
@@ -37,25 +48,16 @@ app.get("/ticket", (req, res) => res.render("ticket"));
 
 app.post("/login-admin", async (req, res) => {
   const { usuario, contrasenia } = req.body;
-
   try {
     if (!usuario || !contrasenia) {
       return res.status(400).json({ success: false, message: "Campos vacíos" });
     }
-
     const adminLogueado = await Admin.findOne({
-      where: {
-        username: usuario,
-        password: contrasenia
-      }
+      where: { username: usuario, password: contrasenia }
     });
-
     if (adminLogueado) {
       adminAutenticado = true; 
-      return res.json({ 
-        success: true, 
-        nombre: adminLogueado.username 
-      });
+      return res.json({ success: true, nombre: adminLogueado.username });
     } else {
       return res.status(400).json({ success: false, message: "Usuario o contraseña incorrectos" });
     }
@@ -67,7 +69,9 @@ app.post("/login-admin", async (req, res) => {
 
 app.get("/inicio", async (req, res) => {
   try {
-    const productos = await Product.findAll();
+    const productos = await Product.findAll({
+      where: { activo: true } 
+    });
     res.render("inicio", { productos: productos });
   } catch (error) {
     res.status(500).send("Error al cargar los productos");
@@ -76,7 +80,7 @@ app.get("/inicio", async (req, res) => {
 
 app.get("/admin", verificarAdminNativo, async (req, res) => {
   try {
-    const productos = await Product.findAll();
+    const productos = await Product.findAll(); 
     res.render("admin", { productos: productos });
   } catch (error) {
     res.status(500).send("Error al cargar el panel de administración");
@@ -90,7 +94,6 @@ app.get("/admin/agregar-producto", verificarAdminNativo, (req, res) => {
 app.post("/admin/agregar-producto", verificarAdminNativo, upload.single("imagen"), async (req, res) => {
   const { nombre, precio, descripcion, stock, categoria } = req.body;
   const imagenNombre = req.file ? req.file.filename : "default.png";
-
   try {
     await Product.create({
       nombre: nombre,
@@ -100,7 +103,6 @@ app.post("/admin/agregar-producto", verificarAdminNativo, upload.single("imagen"
       imagen_url: imagenNombre,
       categoria: categoria || "General"
     });
-    
     res.redirect("/admin");
   } catch (error) {
     console.error("ERROR AL INSERTAR PRODUCTO EN SEQUELIZE:", error);
@@ -111,23 +113,21 @@ app.post("/admin/agregar-producto", verificarAdminNativo, upload.single("imagen"
 app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
   const { id } = req.body;
   try {
-    await Product.destroy({
-      where: { id: id }
-    });
+    await Product.update(
+      { activo: false }, 
+      { where: { id: id } }
+    );
     res.redirect("/admin");
   } catch (error) {
-    console.error("Error al eliminar producto con Sequelize:", error);
+    console.error("Error al dar de baja el producto con Sequelize:", error);
     res.status(500).send("Error al eliminar el producto");
   }
 });
 
 app.post("/ticket/download", async (req, res) => {
   const { nombreUsuario, ticketId, fecha, productos, total } = req.body;
-
   try {
-
     console.log("Procesando orden para:", nombreUsuario);
-
     app.render("ticket", { nombreUsuario, ticketId, fecha, productos, total, isPdf: true }, async (err, html) => {
       if (err) throw err;
       const browser = await puppeteer.launch({ headless: true });
@@ -139,7 +139,6 @@ app.post("/ticket/download", async (req, res) => {
         margin: { top: "20px", bottom: "20px", left: "20px", right: "20px" }
       });
       await browser.close();
-      
       res.contentType("application/pdf");
       res.setHeader("Content-Disposition", `attachment; filename=ticket_eco_vintage_${ticketId}.pdf`);
       res.send(pdfBuffer);
@@ -153,7 +152,6 @@ app.post("/ticket/download", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor abierto en http://localhost:${PORT}`);
-  // Sincroniza y verifica la conexión de Sequelize al iniciar
   sequelize.authenticate()
     .then(() => console.log("Conexión Exitosa a la base de datos con Sequelize ORM"))
     .catch(err => console.error("No se pudo conectar a la base de datos:", err));
