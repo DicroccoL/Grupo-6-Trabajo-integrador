@@ -1,36 +1,67 @@
+//Nucleo del sistema
+
+// Cargar variables de entorno desde el archivo .env para evitar exponer información sensible en el código fuente
 require("dotenv").config();
+
+//framework express para crear el servidor y manejar rutas
 const express = require("express");
+
+//Sirve para construir rutas. 
 const path = require("path");
+
+//para generar el ticket PDF.
+//convierte una vista HTML en un PDF manteniendo el diseño.
 const puppeteer = require("puppeteer");
+
+//Multer recibe archivos enviados desde formularios.
 const multer = require("multer");
+
+//Se inicializa la aplicación Express
 const app = express();
 
+//Se importa la configuración de la base de datos y los modelos
 const sequelize = require("./config/db"); 
 const Admin = require("./models/Admin");
 const Product = require("./models/Product");
 const Order = require("./models/order");
 const OrderItem = require("./models/OrderItem");
+
+//Se importa el archivo de rutas para la API
 const apiRoutes = require("./routes/api");
 
+//una orden puede tener muchos detalles
 Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'items' });
+//cada detalle pertenece a una orden y a un producto
 OrderItem.belongsTo(Order, { foreignKey: 'order_id' });
 OrderItem.belongsTo(Product, { foreignKey: 'product_id' });
+
+//un producto puede venderse en muchas ordenes ,de 1 a *
 Product.hasMany(OrderItem, { foreignKey: 'product_id' });
 
+//Cuando un usuario suba una imagen, guarda en la carpeta img
+//basicamente es la configuracion de multer para guardar archivos en la carpeta img del proyecto
 const upload = multer({ dest: path.join(__dirname, "img") });
 
+//configuracion de la vista ejs 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+//traduce los datos a JSON para entenderlos en el servidor
 app.use(express.json());
+
+//traduce los datos de formularios a objetos JS
 app.use(express.urlencoded({ extended: true }));
 
+//deja que el servidor sirva archivos estaticos como JS, CSS, IMG sin restricciones 
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/js", express.static(path.join(__dirname, "js")));
 app.use("/img", express.static(path.join(__dirname, "img")));
 
+//cualquier ruta que empiece con /api sera manejada por el archivo de rutas api.js
 app.use("/api", apiRoutes); 
 
+
+// de aca hay que borrar todo hasta donde se indique
 let adminAutenticado = false; 
 
 function verificarAdminNativo(req, res, next) {
@@ -40,11 +71,18 @@ function verificarAdminNativo(req, res, next) {
     return res.redirect("/"); 
   }
 }
+// hasta aca 
 
+//rutas para renderizar vistas
+//basicamente cuando el usuario entra a la ruta / se le renderiza la vista indicada en cualquiera de las 3 que siguen
 app.get("/", (req, res) => res.render("index"));
 app.get("/carrito", (req, res) => res.render("carrito"));
+
+//para renderizar la vista del ticket, se le pasa un objeto con la propiedad isPdf en false para indicar que no es un PDF
 app.get("/ticket", (req, res) => res.render("ticket", { isPdf: false }));
 
+
+//esto tambien se tiene que borrar
 app.post("/login-admin", async (req, res) => {
   const { usuario, contrasenia } = req.body;
   try {
@@ -64,32 +102,39 @@ app.post("/login-admin", async (req, res) => {
     return res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 });
+//hasta aca
 
+//muestra la vista de inicio con todos los productos activos en la base de datos y en caso de fallar tira un error 500
 app.get("/inicio", async (req, res) => {
   try {
+    //busca todos los productos activos en la bd
     const productos = await Product.findAll({
       where: { activo: true } 
     });
+    // renderiza el catalogo en el ejs con los productos obtenidos de la base de datos
     res.render("inicio", { productos: productos });
   } catch (error) {
+    //si hay un error al cargar los productos, se envia un mensaje de error al cliente
     res.status(500).send("Error al cargar los productos");
   }
 });
 
+//esta funcion tiene que cambiar cuando se implemente la autenticacion con JWT o sesiones, por ahora es un simple booleano
 app.get("/admin", verificarAdminNativo, async (req, res) => {
   try {
     const productos = await Product.findAll(); 
     
+    //busca las últimas ventas en la base de datos con limite de 10(osea que de aca podemso modificar el limite visual)
     const ultimasVentas = await Order.findAll({
       limit: 10,
-      order: [['fecha', 'DESC']],
+      order: [['fecha', 'DESC']], //ordena por fecha descente.
       include: [{ 
         model: OrderItem, 
         as: 'items',
         include: [Product]
       }]
     });
-
+    // renderiza la vista de admin con los productos y ultimas ventas desde la bd ,por las dudas si salta un error lo atrapa y tira un error 500
     res.render("admin", { productos: productos, ventas: ultimasVentas });
   } catch (error) {
     console.error('Error en /admin:', error);
@@ -166,7 +211,7 @@ app.post("/admin/eliminar-producto", verificarAdminNativo, async (req, res) => {
     res.redirect("/admin");
   } catch (error) {
     res.status(500).send("Error al eliminar el producto");
-  }
+  } 
 });
 
 

@@ -7,7 +7,7 @@ const sequelize = new Sequelize(
     process.env.DB_PASSWORD, 
     {
         host: process.env.DB_HOST,
-        port: process.env.DB_PORT || 3305, // ← ¡ESTA LÍNEA CORRIGE EL ERROR!
+        port: process.env.DB_PORT || 3305, 
         dialect: 'mysql',
         logging: false,
         pool: {

@@ -4,20 +4,25 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "/";
         return;
     }
-    
+    // Mostrar el nombre y la inicial del usuario en la interfaz
     document.getElementById("nombreUsuario").textContent = nombreGuardado;
     document.getElementById("avatarUsuario").textContent = nombreGuardado.charAt(0).toUpperCase();
 
+//declaracion de variables para manejar el carrito de compras
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     const contenedorItems = document.getElementById("contenedor-carrito-items");
     const totalEl = document.getElementById("carrito-total");
     const btnConfirmar = document.getElementById("btn-confirmar-carrito");
     const btnVolver = document.getElementById("btn-volver-catalogo");
+
+    //funcion para declarar la moneda local ars
     const formatearMoneda = (valor) => `$${valor.toLocaleString('es-AR')}`;
 
+    //funcion para renderizar el carrito de compras en la interfaz
     function renderizarCarrito() {
         contenedorItems.innerHTML = ""; 
 
+    //si el carrito esta vacio muestra un mensaje de carrito vacio
         if (carrito.length === 0) {
             contenedorItems.innerHTML = `
                 <div class="carrito-vacios-contenedor">
@@ -26,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p>Vuelva al catálogo para seleccionar sus prendas vintage.</p>
                 </div>
             `;
+            //si el carrito esta vacio el total es 0 y deshabilita el boton de confirmar compra
             totalEl.textContent = "$0";
             btnConfirmar.disabled = true;
             return;
@@ -63,6 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
         btnConfirmar.disabled = false;
     }
 
+//logica para manejar los botones de sumar y restar cantidad de productos en el carrito
+
     contenedorItems.addEventListener("click", (e) => {
         const index = e.target.getAttribute("data-index");
         if (index === null) return;
@@ -78,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("carrito", JSON.stringify(carrito));
         renderizarCarrito();
     });
-
+//Logica para al tocar el btn volver al catalogo te mande al catalogo que es inicio.ejs 
     btnVolver.addEventListener("click", () => window.location.href = "/inicio");
 
     btnConfirmar.addEventListener("click", () => {
@@ -94,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         btnConfirmar.disabled = true; 
 
+//metodo fetch para enviar los datos de la compra al servidor y procesar el checkout
         fetch('/api/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
