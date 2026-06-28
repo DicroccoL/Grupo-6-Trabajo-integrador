@@ -1,26 +1,141 @@
-const Usuario = require('../models/Usuario');
-const bcrypt = require('bcryptjs');
+/**
+ * Controlador de administración
+ * 
+ * Contiene la lógica de negocio para el panel de administración:
+ * - Mostrar panel de admin
+ * - Agregar nuevos productos
+ * - Editar productos existentes
+ * - Eliminar productos (baja lógica)
+ * - Mostrar formulario de agregar/editar productos
+ */
 
-exports.crearAdmin = async (req, res) => {
+const Product = require('../models/Product');
+const Order = require('../models/order');
+const OrderItem = require('../models/OrderItem');
+
+// 
+exports.mostrarPanelAdmin = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    // Obtener todos los productos de la base de datos
+    const productos = await Product.findAll();
 
-
-    const salt = await bcrypt.genSalt(10);
-    const passwordCifrada = await bcrypt.hash(password, salt);
-
-    const nuevoAdmin = await Usuario.create({
-      username,
-      password: passwordCifrada
+    // Obtener las últimas 10 ventas ordenadas por fecha descendente
+    // Se incluyen los detalles (items) y la información del producto de cada item
+    const ultimasVentas = await Order.findAll({
+      limit: 10,
+      order: [['fecha', 'DESC']],
+      include: [{
+        model: OrderItem,
+        as: 'items',
+        include: [Product]
+      }]
     });
 
-    res.status(201).json({
-      status: "success",
-      message: "Administrador creado",
-      id: nuevoAdmin.id
-    });
-
+    // Renderizar la vista de admin con los datos obtenidos
+    res.render("admin", { productos: productos, ventas: ultimasVentas });
   } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
+    console.error('Error en mostrarPanelAdmin:', error);
+    res.status(500).send("Error al cargar el panel de administración");
+  }
+};
+
+//muestra agregar carrito ejs 
+exports.mostrarFormularioAgregarProducto = (req, res) => {
+  res.render("agregar_carrito");
+};
+
+//Logica cuando un administrador envia el formulario para agregar un producto
+exports.agregarProducto = async (req, res) => {
+  // Extraer los datos del formulario
+  const { nombre, precio, descripcion, stock, categoria } = req.body;
+
+  // Si se subió una imagen, usar ese nombre; si no, usar una por defecto
+  const imagenNombre = req.file ? req.file.filename : "default.png";
+
+  try {
+    // Crear el nuevo producto en la base de datos
+    await Product.create({
+      nombre: nombre,
+      precio: precio,
+      descripcion: descripcion,
+      stock: stock,
+      imagen_url: imagenNombre,
+      categoria: categoria || "General"
+    });
+
+    // Redirigir al panel de admin para ver el nuevo producto
+    res.redirect("/admin");
+  } catch (error) {
+    res.status(500).send("Error al guardar el producto en la base de datos");
+  }
+};
+
+
+exports.mostrarFormularioEditarProducto = async (req, res) => {
+  try {
+    // Buscar el producto por su ID (Primary Key)
+    const producto = await Product.findByPk(req.params.id);
+
+    // Si no existe el producto, devolver error 404
+    if (!producto) return res.status(404).send("Producto no encontrado");
+
+    // Renderizar la vista de formulario con modo edición activado
+    // Se utiliza la misma vista "agregar_carrito" pero con esEdicion: true
+    res.render("agregar_carrito", {
+      producto: producto,
+      esEdicion: true
+    });
+  } catch (error) {
+    res.status(500).send("Error al obtener los datos del producto");
+  }
+};
+
+exports.editarProducto = async (req, res) => {
+  try {
+    // Buscar el producto por su ID
+    const producto = await Product.findByPk(req.params.id);
+
+    // Si no existe, devolver error 404
+    if (!producto) return res.status(404).send("Producto no encontrado");
+
+    // Obtener los datos del formulario
+    const { nombre, precio, stock, descripcion, categoria } = req.body;
+
+    // Si se subió una nueva imagen, usarla; si no, mantener la anterior
+    const imagen_url = req.file ? req.file.filename : producto.imagen_url;
+
+    // Actualizar el producto con los nuevos datos
+    await producto.update({
+      nombre,
+      precio,
+      stock,
+      descripcion,
+      categoria,
+      imagen_url
+    });
+
+    // Redirigir al panel de admin para ver los cambios
+    res.redirect("/admin");
+  } catch (error) {
+    res.status(500).send("Error al actualizar el producto");
+  }
+};
+
+
+exports.eliminarProducto = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    // Marcar el producto como inactivo (baja lógica)
+    // Esto evita que aparezca en el catálogo pero mantiene el historial de ventas
+    await Product.update(
+      { activo: false },
+      { where: { id: id } }
+    );
+
+    // Redirigir al panel de admin
+    res.redirect("/admin");
+  } catch (error) {
+    res.status(500).send("Error al eliminar el producto");
   }
 };
