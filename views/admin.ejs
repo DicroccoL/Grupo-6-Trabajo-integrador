@@ -19,6 +19,9 @@
     </div>
     
     <div class="nav-actions">
+      <button type="button" class="carrito-btn" onclick="document.getElementById('form-crear-admin').style.display = document.getElementById('form-crear-admin').style.display === 'block' ? 'none' : 'block';" style="background-color: #2b7a78; color: white; border: none; cursor: pointer;">
+        ➕ Crear nuevo admin
+      </button>
       <a href="/admin/agregar-producto" class="carrito-btn" style="background-color: #2b7a78; color: white; text-decoration: none;">
         ➕ Agregar Nueva Prenda
       </a>
@@ -34,7 +37,37 @@
     </div>
   </nav>
 
-  <div class="admin-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 120px auto 20px auto; padding: 0 20px;">
+  <% if (typeof mensajeExito !== 'undefined' && mensajeExito) { %>
+    <div style="max-width: 1000px; margin: 110px auto 0 auto; padding: 0 20px;">
+      <div style="background: #e8f5e9; color: #2e7d32; padding: 12px 16px; border-radius: 8px; border: 1px solid #c8e6c9;">
+        <strong>✓</strong> <%= mensajeExito %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (typeof mensajeError !== 'undefined' && mensajeError) { %>
+    <div style="max-width: 1000px; margin: 110px auto 0 auto; padding: 0 20px;">
+      <div style="background: #ffebee; color: #c62828; padding: 12px 16px; border-radius: 8px; border: 1px solid #ef9a9a;">
+        <strong>!</strong> <%= mensajeError %>
+      </div>
+    </div>
+  <% } %>
+
+  <div id="form-crear-admin" style="display: none; max-width: 1000px; margin: 20px auto 0 auto; padding: 0 20px;">
+    <div class="admin-card" style="padding: 20px;">
+      <h3>Crear nuevo administrador</h3>
+      <form action="/admin/crear-admin" method="POST" style="display: grid; gap: 12px; margin-top: 10px;">
+        <input type="hidden" name="fromAdminPanel" value="true">
+        <input type="text" name="usuario" placeholder="Nombre de usuario" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+        <input type="password" name="contrasenia" placeholder="Contraseña" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+        <button type="submit" class="carrito-btn" style="background-color: #2b7a78; color: white; border: none; cursor: pointer; width: fit-content;">
+          Crear administrador
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 20px auto 20px auto; padding: 0 20px;">
     
     <main class="admin-card">
       <h2>📦 Productos en Catálogo</h2>

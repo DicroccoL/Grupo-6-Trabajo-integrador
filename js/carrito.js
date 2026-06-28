@@ -108,26 +108,26 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosCompra)
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.error) {
-                alert("Error al procesar la compra: " + data.error);
+        .then(respuesta => respuesta.json())
+        .then(datos => {
+            if (datos.error) {
+                alert("Error al procesar la compra: " + datos.error);
                 btnConfirmar.disabled = false;
             } else {
-                const ticketData = {
+                const datoTicket = {
                     nombreUsuario: nombreGuardado,
-                    ticketId: data.orderId,
-                    fecha: data.fecha || new Date().toLocaleString('es-AR'),
+                    ticketId: datos.orderId,
+                    fecha: datos.fecha || new Date().toLocaleString('es-AR'),
                     productos: carrito,
-                    total: data.total,
+                    total: datos.total,
                     theme: localStorage.getItem('theme') || 'dark'
                 };
-                sessionStorage.setItem("ticketData", JSON.stringify(ticketData));
+                sessionStorage.setItem("ticketData", JSON.stringify(datoTicket));
                 window.location.href = "/ticket";
             }
         })
-        .catch(err => {
-            console.error("Error en el checkout:", err);
+        .catch(error => {
+            console.error("Error en el checkout:", error);
             alert("Hubo un problema de conexión.");
             btnConfirmar.disabled = false;
         });

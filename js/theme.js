@@ -1,12 +1,12 @@
-function setTheme(mode) {
-    localStorage.setItem("theme", mode);
-    document.body.classList.toggle("theme-light", mode === "light");
-    document.body.classList.toggle("theme-dark", mode === "dark");
+function establecerTema(modo) {
+    localStorage.setItem("theme", modo);
+    document.body.classList.toggle("theme-light", modo === "light");
+    document.body.classList.toggle("theme-dark", modo === "dark");
 }
 
-function initTheme() {
-    const theme = localStorage.getItem("theme") || "dark";
-    setTheme(theme);
+function inicializarTema() {
+    const tema = localStorage.getItem("theme") || "dark";
+    establecerTema(tema);
 }
 
-initTheme();
+inicializarTema();

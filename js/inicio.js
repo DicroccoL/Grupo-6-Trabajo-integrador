@@ -21,11 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const contenedorProductos = document.getElementById("contenedor-productos");
 
     function actualizarContador() {
-        const totalItems = carrito.reduce(
+        const totalArtículos = carrito.reduce(
             (sum, item) => sum + item.cantidad,
             0
         );
-        contadorCarrito.textContent = totalItems;
+        contadorCarrito.textContent = totalArtículos;
     }
 
     function agregarAlCarrito(producto) {
@@ -75,13 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function filtrarProductos(categoria) {
-        const cards = document.querySelectorAll(".producto-card");
-        cards.forEach(card => {
-            const categoriaProducto = card.dataset.categoria || "General";
+        const tarjetas = document.querySelectorAll(".producto-card");
+        tarjetas.forEach(tarjeta => {
+            const categoriaProducto = tarjeta.dataset.categoria || "General";
             if (categoria === "Todos" || categoriaProducto === categoria) {
-                card.style.display = "flex";
+                tarjeta.style.display = "flex";
             } else {
-                card.style.display = "none";
+                tarjeta.style.display = "none";
             }
         });
     }

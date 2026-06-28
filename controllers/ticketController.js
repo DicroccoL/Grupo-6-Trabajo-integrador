@@ -10,65 +10,65 @@ const path = require("path");
 
 
 exports.descargarTicketPDF = async (req, res) => {
-  const { nombreUsuario, ticketId, fecha, productos, total, theme } = req.body;
+  const { nombreUsuario, idTicket, fecha, productos, total, tema } = req.body;
 
   try {
     // Renderizar la vista EJS a HTML con los datos del ticket
-    // isPdf: true indica a la vista que se está generando un PDF
-    // theme: el tema visual (light o dark)
+    // esPdf: true indica a la vista que se está generando un PDF
+    // tema: el tema visual (light o dark)
     const html = await renderFile(
       path.join(__dirname, "../views/ticket.ejs"),
       {
         nombreUsuario,
-        ticketId,
+        ticketId: idTicket,
         fecha,
         productos,
         total,
         isPdf: true,
-        theme
+        theme: tema
       }
     );
 
     // Lanzar Puppeteer (navegador sin interfaz gráfica)
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
+    const navegador = await puppeteer.launch({ headless: true });
+    const página = await navegador.newPage();
 
     // Emular tipo de media "screen" para que el PDF se vea como en pantalla
     // (en lugar de como un documento para imprimir)
-    await page.emulateMediaType("screen");
+    await página.emulateMediaType("screen");
 
     // Obtener el puerto del servidor desde variables de entorno o usar 3000 como default
-    const portForPdf = process.env.PORT || 3000;
+    const puertoParaPdf = process.env.PORT || 3000;
 
     // Cargar el HTML en la página de Puppeteer
     // waitUntil: "networkidle0" espera a que todas las solicitudes de red finalicen
-    await page.setContent(html, {
+    await página.setContent(html, {
       waitUntil: "networkidle0",
-      url: `http://localhost:${portForPdf}/`
+      url: `http://localhost:${puertoParaPdf}/`
     });
 
     // Generar el PDF con configuración específica
     // format: "A4" - Tamaño de papel A4
     // printBackground: true - Incluir colores de fondo
     // margin: Márgenes en pixels
-    const pdfBuffer = await page.pdf({
+    const bufferPdf = await página.pdf({
       format: "A4",
       printBackground: true,
       margin: { top: "20px", bottom: "20px", left: "20px", right: "20px" }
     });
 
     // Cerrar el navegador para liberar recursos
-    await browser.close();
+    await navegador.close();
 
     // Configurar headers para la descarga del PDF
     res.contentType("application/pdf");
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename=ticket_eco_vintage_${ticketId}.pdf`
+      `attachment; filename=ticket_eco_vintage_${idTicket}.pdf`
     );
 
     // Enviar el buffer del PDF al cliente
-    res.send(pdfBuffer);
+    res.send(bufferPdf);
   } catch (error) {
     console.error("Error al generar PDF:", error);
     res.status(500).send("Error al procesar la compra.");

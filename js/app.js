@@ -95,22 +95,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnThemeDark = document.getElementById("btn-theme-dark");
 
     function actualizarBotonesTema() {
-        const theme = localStorage.getItem("theme") || "dark";
-        setTheme(theme);
+        const tema = localStorage.getItem("theme") || "dark";
+        establecerTema(tema);
         if (btnThemeLight && btnThemeDark) {
-            btnThemeLight.classList.toggle("active", theme === "light");
-            btnThemeDark.classList.toggle("active", theme === "dark");
+            btnThemeLight.classList.toggle("active", tema === "light");
+            btnThemeDark.classList.toggle("active", tema === "dark");
         }
     }
 
     if (btnThemeLight && btnThemeDark) {
         btnThemeLight.addEventListener("click", () => {
-            setTheme("light");
+            establecerTema("light");
             actualizarBotonesTema();
         });
 
         btnThemeDark.addEventListener("click", () => {
-            setTheme("dark");
+            establecerTema("dark");
             actualizarBotonesTema();
         });
 
@@ -118,8 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-function setTheme(mode) {
-    localStorage.setItem("theme", mode);
-    document.body.classList.toggle("theme-light", mode === "light");
-    document.body.classList.toggle("theme-dark", mode === "dark");
+function establecerTema(modo) {
+    localStorage.setItem("theme", modo);
+    document.body.classList.toggle("theme-light", modo === "light");
+    document.body.classList.toggle("theme-dark", modo === "dark");
 }

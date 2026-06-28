@@ -15,23 +15,23 @@ exports.createOrder = async (req, res) => {
     let total = 0;
     const itemsParaGuardar = [];
 
-    for (const item of carrito) {
-      const producto = await Product.findByPk(item.id, { transaction: t });
+    for (const artículo of carrito) {
+      const producto = await Product.findByPk(artículo.id, { transaction: t });
       
       if (!producto || !producto.activo) {
-        throw new Error(`El producto con ID ${item.id} no existe o no está activo.`);
+        throw new Error(`El producto con ID ${artículo.id} no existe o no está activo.`);
       }
-      if (producto.stock < item.cantidad) {
+      if (producto.stock < artículo.cantidad) {
         throw new Error(`Stock insuficiente para: ${producto.nombre}. Disponible: ${producto.stock}`);
       }
 
-      producto.stock -= item.cantidad;
+      producto.stock -= artículo.cantidad;
       await producto.save({ transaction: t });
 
-      total += producto.precio * item.cantidad;
+      total += producto.precio * artículo.cantidad;
       itemsParaGuardar.push({
         producto,
-        cantidad: item.cantidad
+        cantidad: artículo.cantidad
       });
     }
 
@@ -40,12 +40,12 @@ exports.createOrder = async (req, res) => {
       total
     }, { transaction: t });
 
-    for (const item of itemsParaGuardar) {
+    for (const artículo of itemsParaGuardar) {
       await OrderItem.create({
         order_id: nuevaOrden.id,
-        product_id: item.producto.id,
-        cantidad: item.cantidad,
-        precio_unitario: item.producto.precio
+        product_id: artículo.producto.id,
+        cantidad: artículo.cantidad,
+        precio_unitario: artículo.producto.precio
       }, { transaction: t });
     }
 

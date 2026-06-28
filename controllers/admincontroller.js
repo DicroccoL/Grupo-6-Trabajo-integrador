@@ -31,8 +31,11 @@ exports.mostrarPanelAdmin = async (req, res) => {
       }]
     });
 
+    const mensajeExito = req.query.success ? decodeURIComponent(req.query.success) : null;
+    const mensajeError = req.query.error ? decodeURIComponent(req.query.error) : null;
+
     // Renderizar la vista de admin con los datos obtenidos
-    res.render("admin", { productos: productos, ventas: ultimasVentas });
+    res.render("admin", { productos: productos, ventas: ultimasVentas, mensajeExito, mensajeError });
   } catch (error) {
     console.error('Error en mostrarPanelAdmin:', error);
     res.status(500).send("Error al cargar el panel de administración");
@@ -50,7 +53,7 @@ exports.agregarProducto = async (req, res) => {
   const { nombre, precio, descripcion, stock, categoria } = req.body;
 
   // Si se subió una imagen, usar ese nombre; si no, usar una por defecto
-  const imagenNombre = req.file ? req.file.filename : "default.png";
+  const nombreImagen = req.file ? req.file.filename : "default.png";
 
   try {
     // Crear el nuevo producto en la base de datos
@@ -59,7 +62,7 @@ exports.agregarProducto = async (req, res) => {
       precio: precio,
       descripcion: descripcion,
       stock: stock,
-      imagen_url: imagenNombre,
+      imagen_url: nombreImagen,
       categoria: categoria || "General"
     });
 
@@ -102,7 +105,7 @@ exports.editarProducto = async (req, res) => {
     const { nombre, precio, stock, descripcion, categoria } = req.body;
 
     // Si se subió una nueva imagen, usarla; si no, mantener la anterior
-    const imagen_url = req.file ? req.file.filename : producto.imagen_url;
+    const urlImagen = req.file ? req.file.filename : producto.imagen_url;
 
     // Actualizar el producto con los nuevos datos
     await producto.update({
@@ -111,7 +114,7 @@ exports.editarProducto = async (req, res) => {
       stock,
       descripcion,
       categoria,
-      imagen_url
+      imagen_url: urlImagen
     });
 
     // Redirigir al panel de admin para ver los cambios

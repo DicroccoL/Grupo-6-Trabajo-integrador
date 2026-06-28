@@ -1,35 +1,35 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const inputImagen = document.querySelector('input[name="imagen"]');
+    const entradaImagen = document.querySelector('input[name="imagen"]');
     const formulario = document.querySelector('form');
 
-    if (inputImagen) {
+    if (entradaImagen) {
         const vistaPreviaContenedor = document.createElement('div');
         vistaPreviaContenedor.style.marginTop = '10px';
         vistaPreviaContenedor.style.textAlign = 'center';
         
-        const imgPreview = document.createElement('img');
-        imgPreview.style.maxWidth = '150px';
-        imgPreview.style.borderRadius = '8px';
-        imgPreview.style.display = 'none'; 
+        const previaImagen = document.createElement('img');
+        previaImagen.style.maxWidth = '150px';
+        previaImagen.style.borderRadius = '8px';
+        previaImagen.style.display = 'none'; 
         
-        vistaPreviaContenedor.appendChild(imgPreview);
-        inputImagen.parentNode.appendChild(vistaPreviaContenedor);
+        vistaPreviaContenedor.appendChild(previaImagen);
+        entradaImagen.parentNode.appendChild(vistaPreviaContenedor);
 
-        inputImagen.addEventListener('change', (e) => {
+        entradaImagen.addEventListener('change', (e) => {
             const archivo = e.target.files[0];
             
             if (archivo) {
-                const lector = new FileReader();
+                const lectorArchivos = new FileReader();
                 
             
-                lector.onload = (evento) => {
-                    imgPreview.src = evento.target.result;
-                    imgPreview.style.display = 'inline-block';
+                lectorArchivos.onload = (evento) => {
+                    previaImagen.src = evento.target.result;
+                    previaImagen.style.display = 'inline-block';
                 };
                 
-                lector.readAsDataURL(archivo);
+                lectorArchivos.readAsDataURL(archivo);
             } else {
-                imgPreview.style.display = 'none';
+                previaImagen.style.display = 'none';
             }
         });
     }

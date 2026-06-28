@@ -23,8 +23,8 @@ sequelize.authenticate()
     .then(() => {
         console.log('Conexión Exitosa a la base de datos con Sequelize ORM');
     })
-    .catch(err => {
-        console.error('Error al conectar con la base de datos:', err.message);
+    .catch(error => {
+        console.error('Error al conectar con la base de datos:', error.message);
     });
 
 module.exports = sequelize;
