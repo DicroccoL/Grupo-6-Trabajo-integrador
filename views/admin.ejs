@@ -25,6 +25,9 @@
       <a href="/admin/agregar-producto" class="carrito-btn" style="background-color: #2b7a78; color: white; text-decoration: none;">
         ➕ Agregar Nueva Prenda
       </a>
+      <a href="/admin/reportes" class="carrito-btn" style="background-color: #27a189; color: white; text-decoration: none;">
+        📊 Reportes
+      </a>
       <a href="/" class="carrito-btn" id="btn-cerrar-admin">🚪 Salir del Panel</a>
       
       <div class="user-box">
@@ -39,7 +42,7 @@
 
   <% if (typeof mensajeExito !== 'undefined' && mensajeExito) { %>
     <div style="max-width: 1000px; margin: 140px auto 0 auto; padding: 0 20px;">
-      <div style="background: #e8f5e9; color: #2e7d32; padding: 12px 16px; border-radius: 8px; border: 1px solid #c8e6c9;">
+      <div style="background: #000000; color: #2e7d32; padding: 12px 16px; border-radius: 8px; border: 1px solid #000000;">
         <strong>✓</strong> <%= mensajeExito %>
       </div>
     </div>
@@ -47,7 +50,7 @@
 
   <% if (typeof mensajeError !== 'undefined' && mensajeError) { %>
     <div style="max-width: 1000px; margin: 140px auto 0 auto; padding: 0 20px;">
-      <div style="background: #ffebee; color: #c62828; padding: 12px 16px; border-radius: 8px; border: 1px solid #ef9a9a;">
+      <div style="background: #000000; color: #c62828; padding: 12px 16px; border-radius: 8px; border: 1px solid #ef9a9a;">
         <strong>!</strong> <%= mensajeError %>
       </div>
     </div>
@@ -60,7 +63,7 @@
         <input type="hidden" name="fromAdminPanel" value="true">
         <input type="text" name="usuario" placeholder="Nombre de usuario" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
         <input type="password" name="contrasenia" placeholder="Contraseña" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
-        <button type="submit" class="carrito-btn" style="background-color: #2b7a78; color: white; border: none; cursor: pointer; width: fit-content;">
+        <button type="submit" class="carrito-btn" style="background-color: #2b7a78; color: rgb(0, 0, 0); border: none; cursor: pointer; width: fit-content;">
           Crear administrador
         </button>
       </form>
@@ -74,7 +77,7 @@
       <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
         <% if (productos && productos.length > 0) { %>
           <% productos.filter(p => p.activo).forEach(function(prod) { %>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #000000; padding: 8px 0;">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <img src="/img/<%= prod.imagen_url || prod.imagen %>" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400'">
                 <span><strong><%= prod.nombre %></strong> - $<%= prod.precio %></span>
@@ -104,7 +107,7 @@
       <h2>📊 Últimas 10 Ventas</h2>
       <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em;">
         <thead>
-          <tr style="text-align: left; border-bottom: 2px solid #ddd;">
+          <tr style="text-align: left; border-bottom: 2px solid #000000;">
             <th style="padding: 8px;">ID</th>
             <th style="padding: 8px;">Cliente</th>
             <th style="padding: 8px;">Productos</th>
@@ -113,7 +116,7 @@
         <tbody>
           <% if (typeof ventas !== 'undefined' && ventas.length > 0) { %>
             <% ventas.forEach(venta => { %>
-              <tr style="border-bottom: 1px solid #eee;">
+              <tr style="border-bottom: 1px solid #000000;">
                 <td style="padding: 8px;">#<%= venta.id %></td>
                 <td style="padding: 8px;"><%= venta.nombreUsuario || 'Cliente' %></td>
                 <td style="padding: 8px;">

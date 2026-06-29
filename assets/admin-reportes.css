@@ -1,0 +1,144 @@
+/* ========================================================
+   ESTILOS GENERALES Y CONTENEDOR
+   ======================================================== */
+.reportes-container {
+  max-width: 1200px;
+  margin: 140px auto 20px auto;
+  padding: 0 20px;
+}
+
+/* 1. SECCIÓN PRINCIPAL: Fondo negro y texto general blanco */
+.reportes-container .reporte-seccion {
+  background-color: #000000;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5); /* Sombra más oscura para acompañar */
+  color: #ffffff;
+}
+
+.reportes-container .reporte-seccion h2 {
+  color: #2b7a78;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  border-bottom: 3px solid #2b7a78;
+  padding-bottom: 10px;
+}
+
+/* ========================================================
+   ESTILOS DE LAS TABLAS
+   ======================================================== */
+.reporte-seccion .tabla-reporte {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+/* Encabezados de la tabla (Texto negro sobre fondo verde) */
+.tabla-reporte thead {
+  background-color: #2b7a78;
+}
+
+.tabla-reporte thead th {
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  color: #000000; 
+}
+
+/* Filas de datos (Texto blanco obligado) */
+.tabla-reporte tbody td,
+.tabla-reporte tbody td strong {
+  padding: 12px;
+  border-bottom: 1px solid #222222; /* Línea divisoria sutil */
+  color: #ffffff;
+}
+
+/* Filas intercaladas (Estilo cebra oscuro) */
+.tabla-reporte tbody tr:nth-child(odd) {
+  background-color: #0d0d0d;
+}
+
+.tabla-reporte tbody tr:nth-child(even) {
+  background-color: #000000;
+}
+
+/* Efecto hover sobre las filas */
+.tabla-reporte tbody tr:hover {
+  background-color: #1a1a1a;
+}
+
+/* ========================================================
+   COMPONENTES INTERNOS (BADGES, IMÁGENES Y ENLACES)
+   ======================================================== */
+.imagen-producto {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.badge-ranking {
+  display: inline-block;
+  background-color: #2b7a78;
+  color: #000000;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  min-width: 35px;
+  text-align: center;
+}
+
+.precio-grande {
+  font-weight: bold;
+  color: #2b7a78;
+  font-size: 1.1rem;
+}
+
+/* Cantidad de items invertida: Fondo blanco, número negro */
+.reporte-seccion .cantidad-items {
+  background-color: hsl(178, 48%, 32%);
+  color: hsl(178, 48%, 32%);;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.btn-volver {
+  display: inline-block;
+  background-color: hsl(178, 48%, 32%);
+  color: #000000;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-volver:hover {
+  background-color: #1f5a57;
+  transform: translateY(-2px);
+}
+
+.sin-datos {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+  font-style: italic;
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 768px) {
+  .reportes-container {
+    margin-top: 100px;
+  }
+
+  .tabla-reporte th,
+  .tabla-reporte td {
+    padding: 8px;
+  }
+}

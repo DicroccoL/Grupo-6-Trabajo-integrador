@@ -12,7 +12,8 @@
 const Product = require('../models/Product');
 const Order = require('../models/order');
 const OrderItem = require('../models/OrderItem');
-
+const { Op, fn, col, sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
 // 
 exports.mostrarPanelAdmin = async (req, res) => {
   try {
@@ -83,7 +84,6 @@ exports.mostrarFormularioEditarProducto = async (req, res) => {
     if (!producto) return res.status(404).send("Producto no encontrado");
 
     // Renderizar la vista de formulario con modo edición activado
-    // Se utiliza la misma vista "agregar_carrito" pero con esEdicion: true
     res.render("agregar_carrito", {
       producto: producto,
       esEdicion: true
@@ -140,5 +140,48 @@ exports.eliminarProducto = async (req, res) => {
     res.redirect("/admin");
   } catch (error) {
     res.status(500).send("Error al eliminar el producto");
+  }
+};
+exports.mostrarReportes = async (req, res) => {
+  try {
+    const productosMasVendidos = await OrderItem.findAll({
+      attributes: [
+        'product_id',
+        [fn('SUM', col('cantidad')), 'totalVendido'],
+        [fn('SUM', Sequelize.literal('cantidad * precio_unitario')), 'ingresoTotal']
+      ],
+      include: [{
+        model: Product,
+        attributes: ['id', 'nombre', 'precio', 'imagen_url'],
+        required: true
+      }],
+      group: ['product_id', 'Product.id'],
+      order: [[fn('SUM', col('cantidad')), 'DESC']],
+      limit: 10,
+      subQuery: false,
+      raw: false
+    });
+
+    const ventasMasCaras = await Order.findAll({
+      attributes: ['id', 'fecha', 'total'],
+      order: [['total', 'DESC']],
+      limit: 10,
+      include: [{
+        model: OrderItem,
+        as: 'items',
+        include: [{
+          model: Product,
+          attributes: ['nombre']
+        }]
+      }]
+    });
+    return res.render("admin-reportes", { 
+      productosMasVendidos: productosMasVendidos,
+      ventasMasCaras: ventasMasCaras
+    });
+
+  } catch (error) {
+    console.error('Error en mostrarReportes:', error);
+    return res.status(500).send("Error al cargar los reportes");
   }
 };

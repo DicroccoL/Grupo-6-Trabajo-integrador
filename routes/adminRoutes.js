@@ -10,6 +10,9 @@ const { requireSession } = require("../middleware/auth");
 // RUTA PRINCIPAL DEL DASHBOARD
 router.get("/admin", requireSession, adminController.mostrarPanelAdmin);
 
+// RUTA PARA VER REPORTES
+router.get("/admin/reportes", requireSession, adminController.mostrarReportes);
+
 
 // --- CONTROL DE PRODUCTOS (PROTEGIDOS CON REQUERIMIENTO DE SESIÓN) ---
 

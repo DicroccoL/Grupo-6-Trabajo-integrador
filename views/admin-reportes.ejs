@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Vintage - Reportes</title>
+  <link rel="icon" href="/img/logo.png" type="image/png">
+  <link rel="stylesheet" href="/assets/inicio.css">
+  <link rel="stylesheet" href="/assets/admin-reportes.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="/img/logo.png" alt="Logo">
+      <div>
+        <h1>Eco Vintage</h1>
+        <span class="admin-indicator-text">⚡ Panel de Administración</span>
+      </div>
+    </div>
+    
+    <div class="nav-actions">
+      <a href="/admin" class="carrito-btn" style="background-color: #2b7a78; color: rgb(0, 0, 0); text-decoration: none;">
+        📊 Volver al Panel
+      </a>
+      <a href="/" class="carrito-btn" id="btn-cerrar-admin">🚪 Salir del Panel</a>
+      
+      <div class="user-box">
+        <div class="avatar admin-avatar">A</div>
+        <div class="user-info">
+          <span class="welcome">Rol Jerárquico</span>
+          <strong>Administrador</strong>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="reportes-container">
+    <a href="/admin" class="btn-volver">← Volver al Panel Principal</a>
+
+    <!-- Sección: 10 Productos Más Vendidos -->
+    <div class="reporte-seccion">
+      <h2>🏆 Top 10 Productos Más Vendidos</h2>
+      
+      <% if (productosMasVendidos && productosMasVendidos.length > 0) { %>
+        <table class="tabla-reporte">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Ranking</th>
+              <th style="width: 80px;">Imagen</th>
+              <th>Nombre del Producto</th>
+              <th style="width: 120px;">Unidades Vendidas</th>
+              <th style="width: 150px;">Ingreso Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% productosMasVendidos.forEach((item, index) => { %>
+              <tr>
+                <td>
+                  <span class="badge-ranking">#<%= index + 1 %></span>
+                </td>
+                <td>
+                  <img src="/img/<%= item.Product.imagen_url %>" alt="<%= item.Product.nombre %>" class="imagen-producto" onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400'">
+                </td>
+                <td><strong><%= item.Product.nombre %></strong></td>
+                <td>
+                  <span class="cantidad-items"><%= item.dataValues.totalVendido %></span>
+                </td>
+                <td>
+                  <span class="precio-grande">$<%= parseFloat(item.dataValues.ingresoTotal).toLocaleString('es-AR', {maximumFractionDigits: 2}) %></span>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p class="sin-datos">No hay datos disponibles de productos vendidos.</p>
+      <% } %>
+    </div>
+
+    <!-- Sección: 10 Ventas Más Caras -->
+    <div class="reporte-seccion">
+      <h2>💰 Top 10 Ventas Más Caras</h2>
+      
+      <% if (ventasMasCaras && ventasMasCaras.length > 0) { %>
+        <table class="tabla-reporte">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Ranking</th>
+              <th style="width: 100px;">ID Venta</th>
+              <th style="width: 150px;">Fecha</th>
+              <th style="width: 100px;">Cantidad Items</th>
+              <th style="width: 150px;">Monto Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% ventasMasCaras.forEach((venta, index) => { %>
+              <tr>
+                <td>
+                  <span class="badge-ranking">#<%= index + 1 %></span>
+                </td>
+                <td>
+                  <strong>#<%= venta.id %></strong>
+                </td>
+                <td>
+                  <%= new Date(venta.fecha).toLocaleString('es-AR') %>
+                </td>
+                <td>
+                  <span class="cantidad-items">
+                    <%= venta.items ? venta.items.length : 0 %> producto<%= venta.items && venta.items.length !== 1 ? 's' : '' %>
+                  </span>
+                </td>
+                <td>
+                  <span class="precio-grande">$<%= parseFloat(venta.total).toLocaleString('es-AR', {maximumFractionDigits: 2}) %></span>
+                </td>
+              </tr>
+              <tr style="background-color: #000000; font-size: 0.9rem;">
+                <td colspan="5">
+                  <strong>Detalles:</strong> 
+                  <% if (venta.items && venta.items.length > 0) { %>
+                    <% venta.items.forEach((item, i) => { %>
+                      <div style="margin-top: 5px;">
+                        <%= i + 1 %>. <%= item.Product.nombre %> - 
+                        <span class="cantidad-items"><%= item.cantidad %>x</span> 
+                        @ $<%= parseFloat(item.precio_unitario).toLocaleString('es-AR', {maximumFractionDigits: 2}) %>
+                      </div>
+                    <% }); %>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p class="sin-datos">No hay datos disponibles de ventas.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <footer class="main-footer">
+    <p>© 2026 Eco Vintage - Grupo 6. Integrantes: Tiago Esposito y Lucas Di Crocco.</p>
+  </footer>
+
+  <script src="/js/theme.js"></script>
+
+</body>
+</html>
