@@ -40,17 +40,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnIngresar.addEventListener("click", () => {
-        const nombre = document.getElementById("nombre").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
 
-        if (nombre) {
-            localStorage.setItem("nombreUsuario", nombre);
-            localStorage.removeItem("esAdmin"); 
-            window.location.href = "/inicio";
-        } else {
-            mensajeError.textContent = "Por favor, ingrese su nombre.";
-            mensajeError.classList.add("mostrar");
-        }
-    });
+    if (!validarTexto(nombre)) {
+        mensajeError.textContent =
+            "El nombre debe tener entre 5 y 25 letras y no contener números ni caracteres especiales.";
+        mensajeError.classList.add("mostrar");
+        return;
+    }
+
+    localStorage.setItem("nombreUsuario", nombre);
+    localStorage.removeItem("esAdmin");
+    window.location.href = "/inicio";
+});
 
     document.getElementById("nombre").addEventListener("input", () => {
         mensajeError.textContent = "";
@@ -91,25 +93,25 @@ document.addEventListener("DOMContentLoaded", () => {
     inputAdminUser.addEventListener("input", () => { mensajeErrorAdmin.textContent = ""; });
     inputAdminPass.addEventListener("input", () => { mensajeErrorAdmin.textContent = ""; });
 
-    const btnThemeLight = document.getElementById("btn-theme-light");
-    const btnThemeDark = document.getElementById("btn-theme-dark");
+    const btnTemaClaro = document.getElementById("btn-theme-light");
+    const btnTemaOscuro = document.getElementById("btn-theme-dark");
 
     function actualizarBotonesTema() {
         const tema = localStorage.getItem("theme") || "dark";
         establecerTema(tema);
-        if (btnThemeLight && btnThemeDark) {
-            btnThemeLight.classList.toggle("active", tema === "light");
-            btnThemeDark.classList.toggle("active", tema === "dark");
+        if (btnTemaClaro && btnTemaOscuro) {
+            btnTemaClaro.classList.toggle("active", tema === "light");
+            btnTemaOscuro.classList.toggle("active", tema === "dark");
         }
     }
 
-    if (btnThemeLight && btnThemeDark) {
-        btnThemeLight.addEventListener("click", () => {
+    if (btnTemaClaro && btnTemaOscuro) {
+        btnTemaClaro.addEventListener("click", () => {
             establecerTema("light");
             actualizarBotonesTema();
         });
 
-        btnThemeDark.addEventListener("click", () => {
+        btnTemaOscuro.addEventListener("click", () => {
             establecerTema("dark");
             actualizarBotonesTema();
         });
@@ -122,4 +124,11 @@ function establecerTema(modo) {
     localStorage.setItem("theme", modo);
     document.body.classList.toggle("theme-light", modo === "light");
     document.body.classList.toggle("theme-dark", modo === "dark");
+}
+
+
+//valida texto y largo.
+function validarTexto(texto) {
+    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{5,25}$/;
+    return regex.test(texto.trim());
 }

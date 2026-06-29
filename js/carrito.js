@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //declaracion de variables para manejar el carrito de compras
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     const contenedorItems = document.getElementById("contenedor-carrito-items");
-    const totalEl = document.getElementById("carrito-total");
+    const totalCarrito = document.getElementById("carrito-total");
     const btnConfirmar = document.getElementById("btn-confirmar-carrito");
     const btnVolver = document.getElementById("btn-volver-catalogo");
 
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
             //si el carrito esta vacio el total es 0 y deshabilita el boton de confirmar compra
-            totalEl.textContent = "$0";
+            totalCarrito.textContent = "$0";
             btnConfirmar.disabled = true;
             return;
         }
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             contenedorItems.appendChild(itemRow);
         });
 
-        totalEl.textContent = formatearMoneda(totalGeneral);
+        totalCarrito.textContent = formatearMoneda(totalGeneral);
         btnConfirmar.disabled = false;
     }
 

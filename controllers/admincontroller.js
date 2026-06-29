@@ -53,6 +53,13 @@ exports.agregarProducto = async (req, res) => {
   // Extraer los datos del formulario
   const { nombre, precio, descripcion, stock, categoria } = req.body;
 
+  // Validación del nombre del producto (servidor)
+  const nombreRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{5,25}$/;
+  if (!nombre || !nombreRegex.test(nombre.trim())) {
+    const error = encodeURIComponent('El nombre debe tener entre 5 y 25 letras y no contener números ni caracteres especiales.');
+    return res.redirect('/admin?error=' + error);
+  }
+
   // Si se subió una imagen, usar ese nombre; si no, usar una por defecto
   const nombreImagen = req.file ? req.file.filename : "default.png";
 
@@ -103,6 +110,13 @@ exports.editarProducto = async (req, res) => {
 
     // Obtener los datos del formulario
     const { nombre, precio, stock, descripcion, categoria } = req.body;
+
+    // Validación del nombre del producto (servidor)
+    const nombreRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{5,25}$/;
+    if (!nombre || !nombreRegex.test(nombre.trim())) {
+      const error = encodeURIComponent('El nombre debe tener entre 5 y 25 letras y no contener números ni caracteres especiales.');
+      return res.redirect('/admin?error=' + error);
+    }
 
     // Si se subió una nueva imagen, usarla; si no, mantener la anterior
     const urlImagen = req.file ? req.file.filename : producto.imagen_url;
