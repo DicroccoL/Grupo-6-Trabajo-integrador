@@ -19,6 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const contadorCarrito = document.getElementById("contador-carrito");
     const btnCarrito = document.getElementById("btn-ir-carrito");
     const contenedorProductos = document.getElementById("contenedor-productos");
+    const datosProductos = document.getElementById("productos-datos");
+    const controlesPaginacion = document.getElementById("controles-paginacion");
+    const btnAnterior = document.getElementById("btn-anterior");
+    const btnSiguiente = document.getElementById("btn-siguiente");
+    const infoPagina = document.getElementById("info-pagina");
+
+    const productosPorPagina = 10;
+    let paginaActual = 1;
+    let categoriaFiltro = "Todos";
+    let productosVisibles = [];
 
     function actualizarContador() {
         const totalArtículos = carrito.reduce(
@@ -50,12 +60,64 @@ document.addEventListener("DOMContentLoaded", () => {
         actualizarContador();
         mostrarAlertaVerde();
     }
-    if (contenedorProductos) {
-        contenedorProductos.addEventListener("click", (e) => {
-            if (e.target.classList.contains("btn-agregar")) {
-                const boton = e.target;
-            
-                // Verificar si el botón está deshabilitado
+
+    function obtenerProductosFiltrados() {
+        const todasLasTarjetas = Array.from(datosProductos.querySelectorAll(".producto-card"));
+        
+        if (categoriaFiltro === "Todos") {
+            return todasLasTarjetas;
+        }
+        
+        return todasLasTarjetas.filter(tarjeta => {
+            const categoriaProducto = tarjeta.dataset.categoria || "General";
+            return categoriaProducto === categoriaFiltro;
+        });
+    }
+
+    function renderizarPagina() {
+        productosVisibles = obtenerProductosFiltrados();
+        const totalPaginas = Math.ceil(productosVisibles.length / productosPorPagina);
+        
+
+        if (paginaActual > totalPaginas && totalPaginas > 0) {
+            paginaActual = totalPaginas;
+        }
+        if (paginaActual < 1) {
+            paginaActual = 1;
+        }
+
+        // Calcular índices
+        const inicio = (paginaActual - 1) * productosPorPagina;
+        const fin = inicio + productosPorPagina;
+        const productosPagina = productosVisibles.slice(inicio, fin);
+
+  
+        contenedorProductos.innerHTML = "";
+        
+        if (productosPagina.length === 0) {
+            contenedorProductos.innerHTML = '<p class="no-productos">No hay productos disponibles en este momento.</p>';
+            controlesPaginacion.style.display = "none";
+        } else {
+            productosPagina.forEach(tarjeta => {
+                contenedorProductos.appendChild(tarjeta.cloneNode(true));
+            });
+
+      
+            infoPagina.textContent = `Página ${paginaActual} de ${totalPaginas}`;
+            btnAnterior.disabled = paginaActual === 1;
+            btnSiguiente.disabled = paginaActual === totalPaginas;
+            controlesPaginacion.style.display = totalPaginas > 1 ? "block" : "none";
+        }
+
+        agregarListenersProductos();
+    }
+
+    function agregarListenersProductos() {
+        const botonesAgregar = contenedorProductos.querySelectorAll(".btn-agregar");
+        botonesAgregar.forEach(boton => {
+            boton.addEventListener("click", (e) => {
+                e.preventDefault();
+                
                 if (boton.disabled) {
                     alert("Este producto está agotado y no se puede agregar al carrito.");
                     return;
@@ -69,9 +131,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
                 
                 agregarAlCarrito(producto);
-            }
+            });
         });
     }
+
+    btnAnterior.addEventListener("click", () => {
+        if (paginaActual > 1) {
+            paginaActual--;
+            renderizarPagina();
+            window.scrollTo(0, 0);
+        }
+    });
+
+    btnSiguiente.addEventListener("click", () => {
+        const totalPaginas = Math.ceil(productosVisibles.length / productosPorPagina);
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            renderizarPagina();
+            window.scrollTo(0, 0);
+        }
+    });
 
     function actualizarFiltro(activo) {
         [btnTodos, btnIndumentaria, btnCalzado].forEach(btn => {
@@ -80,30 +159,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function filtrarProductos(categoria) {
-        const tarjetas = document.querySelectorAll(".producto-card");
-        tarjetas.forEach(tarjeta => {
-            const categoriaProducto = tarjeta.dataset.categoria || "General";
-            if (categoria === "Todos" || categoriaProducto === categoria) {
-                tarjeta.style.display = "flex";
-            } else {
-                tarjeta.style.display = "none";
-            }
-        });
-    }
-
     if (btnTodos && btnIndumentaria && btnCalzado) {
         btnTodos.addEventListener("click", () => {
+            categoriaFiltro = "Todos";
+            paginaActual = 1;
             actualizarFiltro(btnTodos);
-            filtrarProductos("Todos");
+            renderizarPagina();
         });
         btnIndumentaria.addEventListener("click", () => {
+            categoriaFiltro = "Indumentaria";
+            paginaActual = 1;
             actualizarFiltro(btnIndumentaria);
-            filtrarProductos("Indumentaria");
+            renderizarPagina();
         });
         btnCalzado.addEventListener("click", () => {
+            categoriaFiltro = "Calzado";
+            paginaActual = 1;
             actualizarFiltro(btnCalzado);
-            filtrarProductos("Calzado");
+            renderizarPagina();
         });
     }
 
@@ -114,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     actualizarContador();
+    renderizarPagina(); 
 });
 
 function mostrarAlertaVerde() {

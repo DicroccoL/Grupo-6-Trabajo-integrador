@@ -41,7 +41,8 @@
         <button id="btn-calzado">Calzado</button>
     </section>
 
-    <section class="productos-grid" id="contenedor-productos">
+    <!-- Contenedor oculto con todos los productos (para paginación) -->
+    <div id="productos-datos" style="display: none;">
         <% if (productos && productos.length > 0) { %>
             <% productos.forEach(producto => { %>
                 <div class="producto-card" data-categoria="<%= producto.categoria %>" data-stock="<%= producto.stock %>">
@@ -67,10 +68,18 @@
                     </button>
                 </div>
             <% }) %>
-        <% } else { %>
-            <p class="no-productos">No hay productos disponibles en este momento.</p>
         <% } %>
-    </section>
+    </div>
+
+    <!-- Contenedor visible para mostrar productos paginados -->
+    <section class="productos-grid" id="contenedor-productos"></section>
+
+    <!-- Controles de paginación -->
+    <div class="paginacion" id="controles-paginacion" style="display: none; text-align: center; margin: 30px 0; padding: 20px;">
+        <button id="btn-anterior" style="padding: 10px 15px; margin: 0 5px; cursor: pointer;">⬅️ Anterior</button>
+        <span id="info-pagina" style="margin: 0 15px; font-weight: bold;">Página 1</span>
+        <button id="btn-siguiente" style="padding: 10px 15px; margin: 0 5px; cursor: pointer;">Siguiente ➡️</button>
+    </div>
 
 </div>
     <footer class="main-footer">
