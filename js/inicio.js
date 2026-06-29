@@ -55,6 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target.classList.contains("btn-agregar")) {
                 const boton = e.target;
             
+                // Verificar si el botón está deshabilitado
+                if (boton.disabled) {
+                    alert("Este producto está agotado y no se puede agregar al carrito.");
+                    return;
+                }
+
                 const producto = {
                     id: parseInt(boton.getAttribute("data-id")),
                     nombre: boton.getAttribute("data-nombre"),

@@ -44,18 +44,26 @@
     <section class="productos-grid" id="contenedor-productos">
         <% if (productos && productos.length > 0) { %>
             <% productos.forEach(producto => { %>
-                <div class="producto-card" data-categoria="<%= producto.categoria %>">
+                <div class="producto-card" data-categoria="<%= producto.categoria %>" data-stock="<%= producto.stock %>">
                     <img src="/img/<%= producto.imagen_url %>" alt="<%= producto.nombre %>" onerror="this.onerror=null; this.src='/img/default.png';">
                     <h3><%= producto.nombre %></h3>
                     <p class="categoria"><%= producto.categoria %></p>
                     <p class="precio">$<%= producto.precio %></p>
-                    <p class="stock">Disponibles: <%= producto.stock %></p>
+                    <p class="stock">
+                        <% if (producto.stock === 0) { %>
+                            <span style="color: #e74c3c; font-weight: bold;">❌ Agotado</span>
+                        <% } else { %>
+                            Disponibles: <%= producto.stock %>
+                        <% } %>
+                    </p>
                     <button class="btn-agregar" 
                             data-id="<%= producto.id %>" 
                             data-nombre="<%= producto.nombre %>" 
                             data-precio="<%= producto.precio %>"
-                            data-categoria="<%= producto.categoria || 'General' %>">
-                        Agregar al carrito
+                            data-categoria="<%= producto.categoria || 'General' %>"
+                            <%= producto.stock === 0 ? 'disabled' : '' %>
+                            style="<%= producto.stock === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '' %>">
+                        <%= producto.stock === 0 ? 'Agotado' : 'Agregar al carrito' %>
                     </button>
                 </div>
             <% }) %>
