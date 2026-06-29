@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= producto.nombre %> - Eco Vintage</title>
+    <link rel="icon" href="/img/logo.png" type="image/png">
+    <link rel="stylesheet" href="/assets/inicio.css">
+    <link rel="stylesheet" href="/assets/producto-detalle.css">
+</head>
+<body>
+
+<div class="container">
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="/img/logo.png" alt="Logo">
+            <div class="brand-text">
+                <h1>Eco Vintage</h1>
+                <span>Indumentaria & Calzado</span>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <button class="carrito-btn" id="btn-ir-carrito">
+               🛒 <span class="carrito-count" id="contador-carrito">0</span>
+            </button>
+
+            <div class="user-box">
+                <div class="avatar" id="avatarUsuario">--</div>
+                <div class="user-info">
+                    <span class="welcome">Bienvenido</span>
+                    <strong id="nombreUsuario">Cargando...</strong>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="detalle-container">
+        <!-- Imagen del producto -->
+        <div class="detalle-imagen">
+            <img src="/img/<%= producto.imagen_url %>" alt="<%= producto.nombre %>" onerror="this.onerror=null; this.src='/img/default.png';">
+        </div>
+
+        <!-- Información del producto -->
+        <div class="detalle-info">
+            <h1><%= producto.nombre %></h1>
+            <span class="categoria"><%= producto.categoria %></span>
+
+            <div class="detalle-precio">$<%= producto.precio %></div>
+
+            <div class="detalle-stock <%= producto.stock === 0 ? 'agotado' : '' %>">
+                <% if (producto.stock === 0) { %>
+                    <strong>❌ Producto Agotado</strong>
+                <% } else { %>
+                    <strong>✓ Disponibles: <%= producto.stock %> unidades</strong>
+                <% } %>
+            </div>
+
+            <div class="detalle-descripcion">
+                <strong>Descripción:</strong><br><br>
+                <%= producto.descripcion || 'No hay descripción disponible para este producto.' %>
+            </div>
+
+            <div class="detalle-acciones">
+                <button class="btn-detalle btn-agregar-detalle" 
+                        id="btn-agregar-detalle"
+                        data-id="<%= producto.id %>"
+                        data-nombre="<%= producto.nombre %>"
+                        data-precio="<%= producto.precio %>"
+                        data-categoria="<%= producto.categoria || 'General' %>"
+                        <%= producto.stock === 0 ? 'disabled' : '' %>>
+                    <%= producto.stock === 0 ? '❌ Agotado' : '🛒 Agregar al Carrito' %>
+                </button>
+                <button class="btn-detalle btn-volver" id="btn-volver-catalogo">← Volver al Catálogo</button>
+            </div>
+
+            <div class="detalle-id">
+                <small>ID del producto: <%= producto.id %></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="main-footer">
+    <p>© 2026 Eco Vintage - Grupo 6. Integrantes: Tiago Esposito y Lucas Di Crocco.</p>
+</footer>
+
+<script src="/js/theme.js"></script>
+<script src="/js/producto-detalle.js"></script>
+
+</body>
+</html>

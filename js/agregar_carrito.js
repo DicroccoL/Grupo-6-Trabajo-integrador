@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const precio = parseFloat(document.querySelector('input[name="precio"]').value);
             const stock = parseInt(document.querySelector('input[name="stock"]').value);
 
-            if (precio <= 0) {
-                e.preventDefault();
-                alert("Por favor, ingresá un precio mayor a 0.");
-                return;
+            if (isNaN(precio) || precio <= 0 || precio > 500000) {
+            e.preventDefault();
+            alert("El precio debe ser mayor a $0 y menor o igual a $500.000.");
+            return;
             }
 
             if (stock < 0) {

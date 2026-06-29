@@ -1,0 +1,139 @@
+.detalle-container {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.detalle-imagen {
+    text-align: center;
+}
+
+.detalle-imagen img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.detalle-info {
+    padding: 20px;
+}
+
+.detalle-info h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.detalle-info .categoria {
+    display: inline-block;
+    background-color: #2b7a78;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.detalle-precio {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2b7a78;
+    margin-bottom: 15px;
+}
+
+.detalle-stock {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-left: 4px solid #2b7a78;
+}
+
+.detalle-stock.agotado {
+    color: #e74c3c;
+    border-left-color: #e74c3c;
+}
+
+.detalle-descripcion {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.detalle-acciones {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.btn-detalle {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.btn-agregar-detalle {
+    background-color: #2b7a78;
+    color: white;
+}
+
+.btn-agregar-detalle:hover:not(:disabled) {
+    background-color: #1f5a57;
+    transform: translateY(-2px);
+}
+
+.btn-agregar-detalle:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-volver {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-volver:hover {
+    background-color: #d0d0d0;
+    transform: translateY(-2px);
+}
+
+.detalle-id {
+    color: #999;
+    font-size: 0.9rem;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .detalle-container {
+        grid-template-columns: 1fr;
+        margin-top: 80px;
+        gap: 20px;
+    }
+
+    .detalle-info h1 {
+        font-size: 1.8rem;
+    }
+
+    .detalle-precio {
+        font-size: 1.5rem;
+    }
+
+    .detalle-acciones {
+        flex-direction: column;
+    }
+}

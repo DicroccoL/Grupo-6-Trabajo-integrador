@@ -57,15 +57,20 @@
                             Disponibles: <%= producto.stock %>
                         <% } %>
                     </p>
-                    <button class="btn-agregar" 
-                            data-id="<%= producto.id %>" 
-                            data-nombre="<%= producto.nombre %>" 
-                            data-precio="<%= producto.precio %>"
-                            data-categoria="<%= producto.categoria || 'General' %>"
-                            <%= producto.stock === 0 ? 'disabled' : '' %>
-                            style="<%= producto.stock === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '' %>">
-                        <%= producto.stock === 0 ? 'Agotado' : 'Agregar al carrito' %>
-                    </button>
+                    <div style="display: flex; gap: 10px; flex-direction: column;">
+                        <button class="btn-agregar" 
+                                data-id="<%= producto.id %>" 
+                                data-nombre="<%= producto.nombre %>" 
+                                data-precio="<%= producto.precio %>"
+                                data-categoria="<%= producto.categoria || 'General' %>"
+                                <%= producto.stock === 0 ? 'disabled' : '' %>
+                                style="<%= producto.stock === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '' %>">
+                            <%= producto.stock === 0 ? 'Agotado' : 'Agregar al carrito' %>
+                        </button>
+                        <a href="/producto/<%= producto.id %>" style="padding: 8px 12px; background-color: #2b7a78; color: white; border: none; border-radius: 6px; text-decoration: none; cursor: pointer; text-align: center; font-size: 0.9rem;">
+                            👁️ Ver Detalles
+                        </a>
+                    </div>
                 </div>
             <% }) %>
         <% } %>

@@ -42,3 +42,25 @@ exports.mostrarCarrito = (req, res) => {
 exports.mostrarTicket = (req, res) => {
   res.render("ticket", { isPdf: false });
 };
+
+//Renderiza la página de detalle de un producto específico
+exports.mostrarDetalleProducto = async (req, res) => {
+  try {
+    // Obtener el ID del producto desde los parámetros de la URL
+    const idProducto = req.params.id;
+
+    // Buscar el producto en la base de datos por su ID
+    const producto = await Product.findByPk(idProducto);
+
+    // Si no existe el producto, devolver error 404
+    if (!producto) {
+      return res.status(404).send("Producto no encontrado");
+    }
+
+    // Renderizar la vista de detalle con los datos del producto
+    res.render("producto-detalle", { producto: producto });
+  } catch (error) {
+    console.error("Error al obtener el detalle del producto:", error);
+    res.status(500).send("Error al cargar los detalles del producto");
+  }
+};

@@ -43,4 +43,14 @@ router.get("/carrito", publicController.mostrarCarrito);
  */
 router.get("/ticket", publicController.mostrarTicket);
 
+/**
+ * Ruta para mostrar el detalle de un producto específico
+ * 
+ * GET /producto/:id
+ * 
+ * Obtiene los datos de un producto por su ID y renderiza una página
+ * de detalle con toda la información del producto.
+ */
+router.get("/producto/:id", publicController.mostrarDetalleProducto);
+
 module.exports = router;
