@@ -12,6 +12,7 @@
 const Product = require('../models/Product');
 const Order = require('../models/order');
 const OrderItem = require('../models/OrderItem');
+const AdminLoginLog = require('../models/AdminLoginLog');
 const { Op, fn, col, sequelize } = require('sequelize');
 const { Sequelize } = require("sequelize");
 // 
@@ -189,9 +190,16 @@ exports.mostrarReportes = async (req, res) => {
         }]
       }]
     });
+
+    const adminLogs = await AdminLoginLog.findAll({
+      order: [['fecha', 'DESC']],
+      limit: 10
+    });
+
     return res.render("admin-reportes", { 
       productosMasVendidos: productosMasVendidos,
-      ventasMasCaras: ventasMasCaras
+      ventasMasCaras: ventasMasCaras,
+      adminLogs: adminLogs
     });
 
   } catch (error) {

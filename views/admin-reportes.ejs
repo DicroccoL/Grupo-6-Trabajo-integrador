@@ -135,6 +135,34 @@
         <p class="sin-datos">No hay datos disponibles de ventas.</p>
       <% } %>
     </div>
+<!-- SECCION DE REPORTES DE LOGINS ADMIN -->
+    <div class="reporte-seccion">
+      <h2>📝 Últimos Registros de Login</h2>
+      <% if (adminLogs && adminLogs.length > 0) { %>
+        <table class="tabla-reporte">
+          <thead>
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th style="width: 120px;">Fecha</th>
+              <th style="width: 120px;">Admin ID</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% adminLogs.forEach((log, index) => { %>
+              <tr>
+                <td><span class="badge-ranking">#<%= index + 1 %></span></td>
+                <td><%= new Date(log.fecha).toLocaleString('es-AR') %></td>
+                <td><%= log.adminId %></td>
+                <td><%= log.accion %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p class="sin-datos">No hay registros de inicio de sesión disponibles.</p>
+      <% } %>
+    </div>
   </div>
 
   <footer class="main-footer">

@@ -1,6 +1,7 @@
 // controllers/authController.js
 
 const Admin = require("../models/Admin");
+const AdminLoginLog = require("../models/AdminLoginLog");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt"); // Importación obligatoria para encriptar y comparar
 
@@ -112,6 +113,16 @@ exports.loginAdmin = async (req, res) => {
           username: cuenta.username,
           role: "admin"
         };
+
+        // Registrar log de inicio de sesión exitoso sin interrumpir el flujo de autenticación
+        try {
+          await AdminLoginLog.create({
+            adminId: cuenta.id,
+            accion: 'Inicio de sesión exitoso'
+          });
+        } catch (logError) {
+          console.error('Error guardando log de inicio de sesión:', logError);
+        }
 
         // B) GENERAR JSON WEB TOKEN (Para consumo seguro y autenticado de la API REST)
         const token = jwt.sign(

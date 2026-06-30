@@ -99,7 +99,7 @@
 /* Cantidad de items invertida: Fondo blanco, número negro */
 .reporte-seccion .cantidad-items {
   background-color: hsl(178, 48%, 32%);
-  color: hsl(178, 48%, 32%);;
+  color: #000000;
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 0.9rem;
@@ -127,6 +127,116 @@
   color: #999;
   padding: 20px;
   font-style: italic;
+}
+
+body.theme-light .reportes-container {
+  background-color: #f3f6f9;
+}
+
+body.theme-light .reportes-container .reporte-seccion {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+body.theme-light .reportes-container .reporte-seccion h2 {
+  color: #1a4158;
+  border-bottom-color: #1a4158;
+}
+
+body.theme-light .tabla-reporte thead {
+  background-color: #d1e9e5;
+}
+
+body.theme-light .tabla-reporte thead th {
+  color: #0f3f3a;
+}
+
+body.theme-light .tabla-reporte tbody td,
+body.theme-light .tabla-reporte tbody td strong {
+  color: #1a1a1a;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+body.theme-light .tabla-reporte tbody tr:nth-child(odd) {
+  background-color: #f9fbfb;
+}
+
+body.theme-light .tabla-reporte tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+body.theme-light .tabla-reporte tbody tr:hover {
+  background-color: #e8f3f1;
+}
+
+body.theme-light .btn-volver {
+  background-color: #2b7a78;
+  color: #ffffff;
+}
+
+body.theme-light .badge-ranking {
+  background-color: #a6d6cc;
+  color: #0f3f3a;
+}
+
+body.theme-light .sin-datos {
+  color: #555;
+}
+
+body.theme-dark {
+  background-color: #050505;
+  color: #ffffff;
+}
+
+body.theme-dark .reportes-container {
+  background-color: #070707;
+}
+
+body.theme-dark .reportes-container .reporte-seccion {
+  background-color: #000000;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(255,255,255,0.08);
+}
+
+body.theme-dark .tabla-reporte thead {
+  background-color: #2b7a78;
+}
+
+body.theme-dark .tabla-reporte thead th {
+  color: #000000;
+}
+
+body.theme-dark .tabla-reporte tbody td,
+body.theme-dark .tabla-reporte tbody td strong {
+  color: #ffffff;
+  border-bottom: 1px solid #222222;
+}
+
+body.theme-dark .tabla-reporte tbody tr:nth-child(odd) {
+  background-color: #0d0d0d;
+}
+
+body.theme-dark .tabla-reporte tbody tr:nth-child(even) {
+  background-color: #000000;
+}
+
+body.theme-dark .tabla-reporte tbody tr:hover {
+  background-color: #1a1a1a;
+}
+
+body.theme-dark .btn-volver {
+  background-color: #2b7a78;
+  color: #000000;
+}
+
+body.theme-dark .sin-datos {
+  color: #ccc;
+}
+
+body.theme-dark .badge-ranking {
+  background-color: #2b7a78;
+  color: #000000;
 }
 
 /* ========================================================

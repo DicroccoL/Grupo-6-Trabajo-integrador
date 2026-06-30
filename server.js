@@ -22,6 +22,7 @@ const Admin = require("./models/Admin");
 const Product = require("./models/Product");
 const Order = require("./models/order");
 const OrderItem = require("./models/OrderItem");
+const AdminLoginLog = require("./models/AdminLoginLog");
 
 // Importar rutas modulares
 const publicRoutes = require("./routes/publicRoutes");
@@ -96,12 +97,20 @@ app.use("/api", apiRoutes);
 // INICIAR SERVIDOR
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  // Autenticar la conexión con la base de datos
-  sequelize
-    .authenticate()
-    .then(() => console.log("✓ Base de datos conectada"))
-    .catch(err => console.error("✗ Error en base de datos:", err));
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✓ Base de datos conectada");
 
-  console.log(`✓ Servidor ejecutándose en puerto ${PORT}`);
-});
+    await sequelize.sync();
+    console.log("✓ Modelos sincronizados");
+
+    app.listen(PORT, () => {
+      console.log(`✓ Servidor ejecutándose en puerto ${PORT}`);
+    });
+  } catch (err) {
+    console.error("✗ Error en base de datos:", err);
+  }
+};
+
+startServer();
