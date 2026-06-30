@@ -1,70 +1,127 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración básica de la página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título, icono y estilos -->
     <title>Eco Vintage - Mi Carrito</title>
     <link rel="icon" href="/img/logo.png" type="image/png">
     <link rel="stylesheet" href="/assets/inicio.css">
 </head>
+
 <body>
 
+    <!-- Barra de navegación -->
     <nav class="navbar">
+
+        <!-- Logo y nombre de la tienda -->
         <div class="nav-brand">
             <img src="/img/logo.png" alt="Logo">
+
             <div>
                 <h1>Eco Vintage</h1>
                 <span>Mi Carrito</span>
             </div>
         </div>
-        
+
+        <!-- Acciones de navegación -->
         <div class="nav-actions">
+
+            <!-- Botón para volver al catálogo -->
             <button class="carrito-btn" id="btn-volver-catalogo">
                 👕 Volver al Catálogo
             </button>
 
+            <!-- Información del cliente -->
             <div class="user-box">
+
+                <!-- Avatar generado con la inicial -->
                 <div class="avatar" id="avatarUsuario">--</div>
+
+                <!-- Nombre del cliente -->
                 <div class="user-info">
                     <span class="welcome">Cliente</span>
                     <strong id="nombreUsuario">Cargando...</strong>
                 </div>
+
             </div>
+
         </div>
+
     </nav>
 
+    <!-- Contenedor principal -->
     <div class="totem-container">
-        
-        <main class="productos-grid" id="contenedor-carrito-items" style="display: flex; flex-direction: column; gap: 15px;">
-            <p class="cargando">Cargando productos seleccionados...</p>
+
+        <!-- Lista de productos agregados al carrito -->
+        <main
+            class="productos-grid"
+            id="contenedor-carrito-items"
+            style="display: flex; flex-direction: column; gap: 15px;">
+
+            <!-- Mensaje mientras se cargan los productos -->
+            <p class="cargando">
+                Cargando productos seleccionados...
+            </p>
+
         </main>
 
+        <!-- Panel con el resumen de la compra -->
         <aside class="ticket-panel">
+
+            <!-- Título del resumen -->
             <h2>Resumen del Pedido</h2>
+
+            <!-- Mensaje informativo -->
             <div class="ticket-lineas" style="justify-content: center; align-items: center;">
+
                 <p style="color: #8f8f8f; text-align: center; font-size: 0.9rem;">
                     Por favor, revise las cantidades antes de emitir su comprobante de pago.
                 </p>
+
             </div>
-            
+
+            <!-- Total y acciones -->
             <div class="ticket-totales">
+
+                <!-- Total acumulado -->
                 <div class="total-fila">
                     <span>Total a Pagar:</span>
                     <span id="carrito-total">$0</span>
                 </div>
-                <button class="btn-finalizar" id="btn-confirmar-carrito" disabled>
+
+                <!-- Botón para confirmar la compra -->
+                <button
+                    class="btn-finalizar"
+                    id="btn-confirmar-carrito"
+                    disabled>
+
                     🧾 Confirmar y Ver Ticket
+
                 </button>
+
             </div>
+
         </aside>
 
     </div>
 
-    <footer class="main-footer" style="text-align: center; padding: 15px; color: #666; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.05);">
-        <p>© 2026 Eco Vintage - Grupo 6. Integrantes: Tiago Esposito y Lucas Di Crocco.</p>
+    <!-- Pie de página -->
+    <footer
+        class="main-footer"
+        style="text-align: center; padding: 15px; color: #666; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.05);">
+
+        <p>
+            © 2026 Eco Vintage - Grupo 6. Integrantes: Tiago Esposito y Lucas Di Crocco.
+        </p>
+
     </footer>
 
+    <!-- Scripts -->
     <script src="/js/theme.js"></script>
     <script src="/js/carrito.js"></script>
+
 </body>
 </html>

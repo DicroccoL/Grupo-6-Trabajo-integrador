@@ -1,56 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Configuración básica de la página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título, icono y estilos -->
     <title>Eco Vintage</title>
     <link rel="icon" href="/img/logo.png" type="image/png">
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
+
 <body>
+
     <div class="container">
 
+        <!-- Panel izquierdo con el logo -->
         <div class="izquierda-panel">
             <img src="/img/logo.png" alt="Eco Vintage">
         </div>
 
+        <!-- Panel derecho con los formularios -->
         <div class="derecha-panel">
-            
+
             <div class="login-box">
-                
+
+                <!-- Título principal -->
                 <h1>Eco Vintage</h1>
-                
+ 
+                <!-- Selector del tema de la página -->
                 <div class="theme-selection" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:20px;">
                     <span style="font-weight:600; color:#333;">Modo de la página:</span>
                     <button id="btn-theme-light" class="theme-mode-btn">Claro</button>
                     <button id="btn-theme-dark" class="theme-mode-btn active">Oscuro</button>
                 </div>
 
+                <!-- Pestañas para elegir el tipo de acceso -->
                 <div class="tabs-login" style="display: flex; gap: 15px; margin-bottom: 20px; position: relative; z-index: 10;">
                     <span id="tab-cliente" class="tab-item active" style="cursor:pointer; font-weight:bold; color:#111; border-bottom: 2px solid #111; padding-bottom: 5px; -webkit-user-select: none; user-select: none;">Cliente</span>
                     <span id="tab-admin" class="tab-item" style="cursor:pointer; color:#888; padding-bottom: 5px; -webkit-user-select: none; user-select: none;">Administrador</span>
                 </div>
 
+                <!-- Formulario para clientes -->
                 <div id="form-cliente" style="display: block;">
-                    <p style="margin-bottom: 15px;">Bienvenido </p>
-                    <input type="text" id="nombre" placeholder="Ingrese su nombre" style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+
+                    <p style="margin-bottom: 15px;">Bienvenido</p>
+
+                    <!-- Campo para ingresar el nombre -->
+                    <input
+                        type="text"
+                        id="nombre"
+                        placeholder="Ingrese su nombre"
+                        style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+
+                    <!-- Mensaje de error -->
                     <p id="mensajeError" class="error-text" style="color: red; font-size: 0.85rem; margin-top: 5px; min-height: 18px;"></p>
-                    <button id="btnIngresar" style="width: 100%; margin-top: 10px;">Ingresar al Catálogo</button>
+
+                    <!-- Botón para ingresar al catálogo -->
+                    <button id="btnIngresar" style="width: 100%; margin-top: 10px;">
+                        Ingresar al Catálogo
+                    </button>
+
                 </div>
 
+                <!-- Formulario para administradores -->
                 <div id="form-admin" style="display: none;">
-                    <p style="margin-bottom: 15px;">Acceso exclusivo para personal de Eco Vintage</p>
-                    <input type="text" id="admin-user" placeholder="Usuario administrador" style="width: 100%; margin-top: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
-                    <input type="password" id="admin-pass" placeholder="Contraseña de seguridad" style="width: 100%; margin-top: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+
+                    <p style="margin-bottom: 15px;">
+                        Acceso exclusivo para personal de Eco Vintage
+                    </p>
+
+                    <!-- Usuario administrador -->
+                    <input
+                        type="text"
+                        id="admin-user"
+                        placeholder="Usuario administrador"
+                        style="width: 100%; margin-top: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+
+                    <!-- Contraseña -->
+                    <input
+                        type="password"
+                        id="admin-pass"
+                        placeholder="Contraseña de seguridad"
+                        style="width: 100%; margin-top: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+
+                    <!-- Mensaje de error -->
                     <p id="mensajeErrorAdmin" class="error-text" style="color: red; font-size: 0.85rem; margin-top: 5px; min-height: 18px;"></p>
-                    <button id="btnIngresarAdmin" style="width: 100%; margin-top: 10px; background: #222; color: white;">Ingresar Panel Admin</button>
+
+                    <!-- Botón para ingresar al panel administrador -->
+                    <button id="btnIngresarAdmin" style="width: 100%; margin-top: 10px; background: #222; color: white;">
+                        Ingresar Panel Admin
+                    </button>
+
                 </div>
 
             </div>
-            </div>
+
+        </div>
 
     </div>
+
+    <!-- Scripts -->
     <script src="/js/theme.js"></script>
     <script src="/js/app.js"></script>
+
 </body>
 </html>

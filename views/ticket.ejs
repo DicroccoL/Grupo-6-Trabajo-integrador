@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración básica de la página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título, icono y estilos -->
     <title>Eco Vintage - Comprobante de Compra</title>
     <link rel="icon" href="/img/logo.png" type="image/png">
     <link rel="stylesheet" href="/assets/inicio.css">
 </head>
+
+<!-- Aplica el tema seleccionado -->
 <body class="<%= (typeof theme !== 'undefined' && theme === 'light') ? 'theme-light' : ((typeof theme !== 'undefined' && theme === 'dark') ? 'theme-dark' : '') %>">
+
+    <!-- Verifica si la vista corresponde a un PDF -->
     <% const isPdfActive = typeof isPdf !== 'undefined' && isPdf; %>
+
+    <!-- Barra de navegación -->
     <nav class="navbar">
+
+        <!-- Logo y título -->
         <div class="nav-brand">
             <img src="/img/logo.png" alt="Logo">
             <div>
@@ -17,75 +28,134 @@
                 <span>Comprobante de Pago</span>
             </div>
         </div>
-        
+
+        <!-- Información del cliente -->
         <div class="nav-actions">
             <div class="user-box">
-                <div class="avatar" id="avatarUsuario"><%= isPdfActive ? (nombreUsuario ? nombreUsuario.charAt(0).toUpperCase() : 'C') : '--' %></div>
+                <div class="avatar" id="avatarUsuario">
+                    <%= isPdfActive ? (nombreUsuario ? nombreUsuario.charAt(0).toUpperCase() : 'C') : '--' %>
+                </div>
+
                 <div class="user-info">
                     <span class="welcome">Cliente</span>
-                    <strong id="nombreUsuario"><%= isPdfActive ? (nombreUsuario || 'Consumidor Final') : 'Cargando...' %></strong>
+                    <strong id="nombreUsuario">
+                        <%= isPdfActive ? (nombreUsuario || 'Consumidor Final') : 'Cargando...' %>
+                    </strong>
                 </div>
             </div>
         </div>
+
     </nav>
 
+    <!-- Contenedor principal del comprobante -->
     <div class="container-ticket-final">
+
         <div class="ticket-card-box">
+
+            <!-- Encabezado del comprobante -->
             <div class="ticket-header">
-                <span class="ticket-icon">✨</span>
+                <span class="ticket-icon"></span>
                 <h2 class="ticket-title">¡Compra Exitosa!</h2>
-                <p class="ticket-subtitle">Gracias por apoyar la moda circular en Eco Vintage</p>
+                <p class="ticket-subtitle">Gracias por apoyar a Eco Vintage</p>
             </div>
-            
+
+            <!-- Datos generales de la compra -->
             <div class="ticket-section-line">
+
                 <div class="ticket-row-data">
                     <strong>Cliente:</strong>
-                    <span id="ticket-cliente"><%= isPdfActive ? (nombreUsuario || 'Consumidor Final') : '-' %></span>
+                    <span id="ticket-cliente">
+                        <%= isPdfActive ? (nombreUsuario || 'Consumidor Final') : '-' %>
+                    </span>
                 </div>
+
                 <div class="ticket-row-data">
                     <strong>Fecha:</strong>
-                    <span id="ticket-fecha"><%= isPdfActive ? (fecha || new Date().toLocaleString('es-AR')) : '-' %></span>
+                    <span id="ticket-fecha">
+                        <%= isPdfActive ? (fecha || new Date().toLocaleString('es-AR')) : '-' %>
+                    </span>
                 </div>
+
                 <div class="ticket-row-data">
                     <strong>N° Operación:</strong>
-                    <span id="ticket-id"><%= isPdfActive ? (ticketId || Math.floor(100000 + Math.random() * 900000)) : '-' %></span>
+                    <span id="ticket-id">
+                        <%= isPdfActive ? (ticketId || Math.floor(100000 + Math.random() * 900000)) : '-' %>
+                    </span>
                 </div>
+
             </div>
 
+            <!-- Lista de productos comprados -->
             <div id="ticket-productos-list" class="ticket-section-line productos-ticket-scroll">
+
                 <% if (isPdfActive && Array.isArray(productos)) { %>
+
                     <% productos.forEach(item => { %>
+
                         <div class="ticket-item-row">
-                            <span class="tkt-prod-name"><%= item.cantidad %>x <%= item.nombre %></span>
-                            <span class="tkt-prod-subtotal">$<%= Number(item.precio * item.cantidad).toLocaleString('es-AR') %></span>
+                            <span class="tkt-prod-name">
+                                <%= item.cantidad %>x <%= item.nombre %>
+                            </span>
+
+                            <span class="tkt-prod-subtotal">
+                                $<%= Number(item.precio * item.cantidad).toLocaleString('es-AR') %>
+                            </span>
                         </div>
+
                     <% }); %>
+
                 <% } %>
+
             </div>
 
+            <!-- Total de la compra -->
             <div class="ticket-total-final">
                 <span>TOTAL ABONADO:</span>
-                <span id="ticket-total-monto">$<%= isPdfActive ? Number(total || 0).toLocaleString('es-AR') : '0' %></span>
+                <span id="ticket-total-monto">
+                    $<%= isPdfActive ? Number(total || 0).toLocaleString('es-AR') : '0' %>
+                </span>
             </div>
 
+            <!-- Acciones disponibles -->
             <div class="ticket-actions-panel">
+
                 <% if (!isPdfActive) { %>
-                    <button class="btn-finalizar" id="btn-descargar-pdf">📥 Descargar Comprobante PDF</button>
-                    <a href="/" class="btn-volver-link" id="btn-volver-inicio">👕 Salir</a>
+
+                    <!-- Descargar comprobante -->
+                    <button class="btn-finalizar" id="btn-descargar-pdf">
+                        📥 Descargar Comprobante PDF
+                    </button>
+
+                    <!-- Salir -->
+                    <a href="/" class="btn-volver-link" id="btn-volver-inicio">
+                        👕 Salir
+                    </a>
+
                 <% } else { %>
-                    <a href="/" class="btn-volver-link">👕 Volver al sitio</a>
+
+                    <!-- Volver al sitio -->
+                    <a href="/" class="btn-volver-link">
+                        👕 Volver al sitio
+                    </a>
+
                 <% } %>
+
             </div>
+
         </div>
+
     </div>
 
+    <!-- Pie de página -->
     <footer class="main-footer">
         <p>© 2026 Eco Vintage - Grupo 6. Trabajo Práctico Integrador.</p>
     </footer>
 
+    <!-- Scripts -->
     <% if (!isPdfActive) { %>
         <script src="/js/theme.js"></script>
         <script src="/js/ticket.js"></script>
     <% } %>
+
 </body>
 </html>

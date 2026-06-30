@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Configuración básica de la página -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título dinámico según la acción -->
   <title>Eco Vintage - <%= (typeof esEdicion !== 'undefined' && esEdicion) ? 'Editar Producto' : 'Cargar Producto' %></title>
+
+  <!-- Icono y estilos -->
   <link rel="icon" href="/img/logo.png" type="image/png">
   <link rel="stylesheet" href="/assets/inicio.css">
 </head>
 <body>
 
+  <!-- Barra de navegación -->
   <nav class="navbar">
+
+    <!-- Logo e identificación del panel -->
     <div class="nav-brand">
       <img src="/img/logo.png" alt="Logo">
       <div>
@@ -17,61 +25,135 @@
         <span class="admin-indicator-text">⚡ Panel de Administración</span>
       </div>
     </div>
+
+    <!-- Botón para volver al panel -->
     <div class="nav-actions">
-      <a href="/admin" class="carrito-btn" style="text-decoration: none;">⬅️ Volver al Panel</a>
+      <a href="/admin" class="carrito-btn" style="text-decoration: none;">
+        ⬅️ Volver al Panel
+      </a>
     </div>
+
   </nav>
 
+  <!-- Contenedor principal -->
   <div class="admin-layout" style="grid-template-columns: 1fr; max-width: 450px; margin: 120px auto 20px auto;">
+
+    <!-- Tarjeta del formulario -->
     <aside class="admin-card">
-      <h2><%= (typeof esEdicion !== 'undefined' && esEdicion) ? '✏️ Editar Producto' : '➕ Cargar Nuevo Producto' %></h2>
-      
-      <form action="<%= (typeof esEdicion !== 'undefined' && esEdicion) ? '/admin/editar-producto/' + producto.id : '/admin/agregar-producto' %>" method="POST" enctype="multipart/form-data">
-        
+
+      <!-- Título dinámico -->
+      <h2>
+        <%= (typeof esEdicion !== 'undefined' && esEdicion) ? '✏️ Editar Producto' : '➕ Cargar Nuevo Producto' %>
+      </h2>
+
+      <!-- Formulario para agregar o editar un producto -->
+      <form
+        action="<%= (typeof esEdicion !== 'undefined' && esEdicion) ? '/admin/editar-producto/' + producto.id : '/admin/agregar-producto' %>"
+        method="POST"
+        enctype="multipart/form-data">
+
+        <!-- Envía el ID cuando se edita un producto -->
         <% if (typeof esEdicion !== 'undefined' && esEdicion) { %>
           <input type="hidden" name="id" value="<%= producto.id %>">
         <% } %>
 
+        <!-- Nombre del producto -->
         <div class="form-group">
           <label>Nombre del Producto</label>
-          <input type="text" name="nombre" placeholder="Ej: Campera Denim Retro" value="<%= (typeof producto !== 'undefined') ? producto.nombre : '' %>" required>
+          <input
+            type="text"
+            name="nombre"
+            placeholder="Ej: Campera Denim Retro"
+            value="<%= (typeof producto !== 'undefined') ? producto.nombre : '' %>"
+            required>
         </div>
-        
+
+        <!-- Precio -->
         <div class="form-group">
           <label>Precio ($)</label>
-          <input type="number" name="precio" placeholder="Ej: 14500" value="<%= (typeof producto !== 'undefined') ? producto.precio : '' %>" required>
+          <input
+            type="number"
+            name="precio"
+            placeholder="Ej: 14500"
+            value="<%= (typeof producto !== 'undefined') ? producto.precio : '' %>"
+            required>
         </div>
-        
+
+        <!-- Stock disponible -->
         <div class="form-group">
           <label>Stock Disponible</label>
-          <input type="number" name="stock" value="<%= (typeof producto !== 'undefined') ? producto.stock : '1' %>" required>
+          <input
+            type="number"
+            name="stock"
+            value="<%= (typeof producto !== 'undefined') ? producto.stock : '1' %>"
+            required>
         </div>
-        
+
+        <!-- Descripción -->
         <div class="form-group">
           <label>Descripción</label>
-          <textarea name="descripcion" rows="2" placeholder="Detalles de la prenda..." style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc; resize:none; font-family:sans-serif;"><%= (typeof producto !== 'undefined') ? producto.descripcion : '' %></textarea>
+          <textarea
+            name="descripcion"
+            rows="2"
+            placeholder="Detalles de la prenda..."
+            style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc; resize:none; font-family:sans-serif;"><%= (typeof producto !== 'undefined') ? producto.descripcion : '' %></textarea>
         </div>
-        
+
+        <!-- Categoría -->
         <div class="form-group">
           <label>Categoria</label>
-          <select name="categoria" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:16px;">
-            <option value="Indumentaria" <%= (typeof producto !== 'undefined' && producto.categoria === 'Indumentaria') ? 'selected' : '' %>>Indumentaria</option>
-            <option value="Calzado" <%= (typeof producto !== 'undefined' && producto.categoria === 'Calzado') ? 'selected' : '' %>>Calzado</option>
+
+          <select
+            name="categoria"
+            required
+            style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:16px;">
+
+            <option
+              value="Indumentaria"
+              <%= (typeof producto !== 'undefined' && producto.categoria === 'Indumentaria') ? 'selected' : '' %>>
+              Indumentaria
+            </option>
+
+            <option
+              value="Calzado"
+              <%= (typeof producto !== 'undefined' && producto.categoria === 'Calzado') ? 'selected' : '' %>>
+              Calzado
+            </option>
+
           </select>
         </div>
 
+        <!-- Imagen del producto -->
         <div class="form-group">
-          <label>Foto de la Prenda <%= (typeof esEdicion !== 'undefined' && esEdicion) ? '(Opcional si no deseas cambiarla)' : '' %></label>
-          <input type="file" name="imagen" accept="image/*" <%= (typeof esEdicion !== 'undefined' && esEdicion) ? '' : 'required' %>>
+          <label>
+            Foto de la Prenda
+            <%= (typeof esEdicion !== 'undefined' && esEdicion) ? '(Opcional si no deseas cambiarla)' : '' %>
+          </label>
+
+          <input
+            type="file"
+            name="imagen"
+            accept="image/*"
+            <%= (typeof esEdicion !== 'undefined' && esEdicion) ? '' : 'required' %>>
         </div>
-       
-        <button type="submit" class="btn-admin-action" style="width: 100%; cursor: pointer;">
+
+        <!-- Botón para guardar -->
+        <button
+          type="submit"
+          class="btn-admin-action"
+          style="width: 100%; cursor: pointer;">
+
           <%= (typeof esEdicion !== 'undefined' && esEdicion) ? 'Guardar Cambios' : 'Guardar Producto' %>
+
         </button>
+
       </form>
+
     </aside>
+
   </div>
 
+  <!-- Pie de página -->
   <footer class="main-footer">
     <p>© 2026 Eco Vintage - Grupo 6. Panel de Gestión Exclusivo.</p>
   </footer>

@@ -1,7 +1,4 @@
-/**
- * Rutas de autenticación
- * Define las rutas relacionadas con el login y autenticación del administrador:
-*/
+
 
 const express = require("express");
 const router = express.Router();

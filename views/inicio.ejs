@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración básica de la página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eco Vintage - Catálogo</title>
+
+    <!-- Icono y estilos -->
     <link rel="icon" href="/img/logo.png" type="image/png">
     <link rel="stylesheet" href="/assets/inicio.css">
 </head>
@@ -11,7 +14,10 @@
 
 <div class="container">
 
+    <!-- Barra de navegación -->
     <nav class="navbar">
+
+        <!-- Logo y nombre de la tienda -->
         <div class="nav-brand">
             <img src="/img/logo.png" alt="Logo">
             <div class="brand-text">
@@ -20,11 +26,15 @@
             </div>
         </div>
 
+        <!-- Carrito y datos del usuario -->
         <div class="nav-actions">
+
+            <!-- Botón para acceder al carrito -->
             <button class="carrito-btn" id="btn-ir-carrito">
                🛒 <span class="carrito-count" id="contador-carrito">0</span>
             </button>
 
+            <!-- Información del usuario logueado -->
             <div class="user-box">
                 <div class="avatar" id="avatarUsuario">--</div>
                 <div class="user-info">
@@ -35,21 +45,38 @@
         </div>
     </nav>
 
+    <!-- Botones para filtrar productos -->
     <section class="filtros">
         <button class="activo" id="btn-todos">Todos</button>
         <button id="btn-indumentaria">Indumentaria</button>
         <button id="btn-calzado">Calzado</button>
     </section>
 
-    <!-- Contenedor oculto con todos los productos (para paginación) -->
+    <!-- Contenedor oculto con todos los productos -->
     <div id="productos-datos" style="display: none;">
+
+        <!-- Verifica que existan productos -->
         <% if (productos && productos.length > 0) { %>
+
+            <!-- Recorre todos los productos -->
             <% productos.forEach(producto => { %>
-                <div class="producto-card" data-categoria="<%= producto.categoria %>" data-stock="<%= producto.stock %>">
-                    <img src="/img/<%= producto.imagen_url %>" alt="<%= producto.nombre %>" onerror="this.onerror=null; this.src='/img/default.png';">
+
+                <!-- Tarjeta individual -->
+                <div class="producto-card"
+                     data-categoria="<%= producto.categoria %>"
+                     data-stock="<%= producto.stock %>">
+
+                    <!-- Imagen del producto -->
+                    <img src="/img/<%= producto.imagen_url %>"
+                         alt="<%= producto.nombre %>"
+                         onerror="this.onerror=null; this.src='/img/default.png';">
+
+                    <!-- Información del producto -->
                     <h3><%= producto.nombre %></h3>
                     <p class="categoria"><%= producto.categoria %></p>
                     <p class="precio">$<%= producto.precio %></p>
+
+                    <!-- Muestra el stock disponible -->
                     <p class="stock">
                         <% if (producto.stock === 0) { %>
                             <span style="color: #e74c3c; font-weight: bold;">❌ Agotado</span>
@@ -57,42 +84,71 @@
                             Disponibles: <%= producto.stock %>
                         <% } %>
                     </p>
+
+                    <!-- Botones de acciones -->
                     <div style="display: flex; gap: 10px; flex-direction: column;">
-                        <button class="btn-agregar" 
-                                data-id="<%= producto.id %>" 
-                                data-nombre="<%= producto.nombre %>" 
-                                data-precio="<%= producto.precio %>"
-                                data-categoria="<%= producto.categoria || 'General' %>"
-                                <%= producto.stock === 0 ? 'disabled' : '' %>
-                                style="<%= producto.stock === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '' %>">
+
+                        <!-- Botón para agregar al carrito -->
+                        <button
+                            class="btn-agregar"
+                            data-id="<%= producto.id %>"
+                            data-nombre="<%= producto.nombre %>"
+                            data-precio="<%= producto.precio %>"
+                            data-categoria="<%= producto.categoria || 'General' %>"
+                            <%= producto.stock === 0 ? 'disabled' : '' %>
+                            style="<%= producto.stock === 0 ? 'opacity: 0.5; cursor: not-allowed;' : '' %>">
+
                             <%= producto.stock === 0 ? 'Agotado' : 'Agregar al carrito' %>
                         </button>
-                        <a href="/producto/<%= producto.id %>" style="padding: 8px 12px; background-color: #2b7a78; color: white; border: none; border-radius: 6px; text-decoration: none; cursor: pointer; text-align: center; font-size: 0.9rem;">
+
+                        <!-- Enlace para ver el detalle -->
+                        <a href="/producto/<%= producto.id %>"
+                           style="padding: 8px 12px; background-color: #2b7a78; color: white; border: none; border-radius: 6px; text-decoration: none; cursor: pointer; text-align: center; font-size: 0.9rem;">
                             👁️ Ver Detalles
                         </a>
+
                     </div>
                 </div>
+
             <% }) %>
+
         <% } %>
+
     </div>
 
-    <!-- Contenedor visible para mostrar productos paginados -->
+    <!-- Contenedor donde se muestran los productos paginados -->
     <section class="productos-grid" id="contenedor-productos"></section>
 
-    <!-- Controles de paginación -->
+    <!-- Controles para cambiar de página -->
     <div class="paginacion" id="controles-paginacion" style="display: none; text-align: center; margin: 30px 0; padding: 20px;">
-        <button id="btn-anterior" style="padding: 10px 15px; margin: 0 5px; cursor: pointer;">⬅️ Anterior</button>
-        <span id="info-pagina" style="margin: 0 15px; font-weight: bold;">Página 1</span>
-        <button id="btn-siguiente" style="padding: 10px 15px; margin: 0 5px; cursor: pointer;">Siguiente ➡️</button>
+
+        <!-- Página anterior -->
+        <button id="btn-anterior" style="padding: 10px 15px; margin: 0 5px; cursor: pointer;">
+            ⬅️ Anterior
+        </button>
+
+        <!-- Número de página -->
+        <span id="info-pagina" style="margin: 0 15px; font-weight: bold;">
+            Página 1
+        </span>
+
+        <!-- Página siguiente -->
+        <button id="btn-siguiente" style="padding: 10px 15px; margin: 0 5px; cursor: pointer;">
+            Siguiente ➡️
+        </button>
+
     </div>
 
 </div>
-    <footer class="main-footer">
-        <p>© 2026 Eco Vintage - Grupo 6. Integrantes: Tiago Esposito y Lucas Di Crocco.</p>
-    </footer>
 
+<!-- Pie de página -->
+<footer class="main-footer">
+    <p>© 2026 Eco Vintage - Grupo 6. Integrantes: Tiago Esposito y Lucas Di Crocco.</p>
+</footer>
 
+<!-- Scripts -->
 <script src="/js/theme.js"></script>
 <script src="/js/inicio.js"></script>
+
 </body>
-</html>
+</html> 

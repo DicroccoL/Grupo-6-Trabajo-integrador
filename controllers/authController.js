@@ -145,8 +145,7 @@ exports.loginAdmin = async (req, res) => {
 
 /**
  * 3. LOGOUT: Cierre de sesión y destrucción de cookies en el servidor
- * Ruta sugerida: GET /logout-admin
- */
+*/
 exports.logoutAdmin = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
