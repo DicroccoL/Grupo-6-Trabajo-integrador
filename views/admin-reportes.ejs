@@ -41,6 +41,7 @@
     <!-- Sección: 10 Productos Más Vendidos -->
     <div class="reporte-seccion">
       <h2>🏆 Top 10 Productos Más Vendidos</h2>
+      <a href="/admin/export/productos" class="btn-volver" style="float: right; margin-top: -6px;">📥 Descargar Excel</a>
       
       <% if (productosMasVendidos && productosMasVendidos.length > 0) { %>
         <table class="tabla-reporte">
@@ -81,6 +82,7 @@
     <!-- Sección: 10 Ventas Más Caras -->
     <div class="reporte-seccion">
       <h2>💰 Top 10 Ventas Más Caras</h2>
+      <a href="/admin/export/ventas" class="btn-volver" style="float: right; margin-top: -6px;">📥 Descargar Excel</a>
       
       <% if (ventasMasCaras && ventasMasCaras.length > 0) { %>
         <table class="tabla-reporte">
@@ -138,6 +140,7 @@
 <!-- SECCION DE REPORTES DE LOGINS ADMIN -->
     <div class="reporte-seccion">
       <h2>📝 Últimos Registros de Login</h2>
+      <a href="/admin/export/logs" class="btn-volver" style="float: right; margin-top: -6px;">📥 Descargar Excel</a>
       <% if (adminLogs && adminLogs.length > 0) { %>
         <table class="tabla-reporte">
           <thead>

@@ -27,6 +27,7 @@
     "multer": "^2.2.0",
     "mysql2": "^3.22.5",
     "puppeteer": "^25.2.1",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "xlsx": "^0.18.5"
   }
 }

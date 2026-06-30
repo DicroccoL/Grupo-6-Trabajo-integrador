@@ -13,9 +13,12 @@ const Product = require('../models/Product');
 const Order = require('../models/order');
 const OrderItem = require('../models/OrderItem');
 const AdminLoginLog = require('../models/AdminLoginLog');
+
+// Importa funciones de Sequelize para realizar consultas avanzadas
 const { Op, fn, col, sequelize } = require('sequelize');
 const { Sequelize } = require("sequelize");
-// 
+
+// Muestra el panel principal de administración
 exports.mostrarPanelAdmin = async (req, res) => {
   try {
     // Obtener todos los productos de la base de datos
@@ -33,24 +36,34 @@ exports.mostrarPanelAdmin = async (req, res) => {
       }]
     });
 
+    // Obtiene mensajes enviados por la URL luego de alguna operación
     const mensajeExito = req.query.success ? decodeURIComponent(req.query.success) : null;
     const mensajeError = req.query.error ? decodeURIComponent(req.query.error) : null;
 
     // Renderizar la vista de admin con los datos obtenidos
-    res.render("admin", { productos: productos, ventas: ultimasVentas, mensajeExito, mensajeError });
+    res.render("admin", {
+      productos: productos,
+      ventas: ultimasVentas,
+      mensajeExito,
+      mensajeError
+    });
+
   } catch (error) {
     console.error('Error en mostrarPanelAdmin:', error);
     res.status(500).send("Error al cargar el panel de administración");
   }
 };
 
-//muestra agregar carrito ejs 
+
+// Muestra el formulario para agregar un nuevo producto
 exports.mostrarFormularioAgregarProducto = (req, res) => {
   res.render("agregar_carrito");
 };
 
-//Logica cuando un administrador envia el formulario para agregar un producto
+
+// Lógica cuando un administrador envía el formulario para agregar un producto
 exports.agregarProducto = async (req, res) => {
+
   // Extraer los datos del formulario
   const { nombre, precio, descripcion, stock, categoria } = req.body;
 
@@ -65,6 +78,7 @@ exports.agregarProducto = async (req, res) => {
   const nombreImagen = req.file ? req.file.filename : "default.png";
 
   try {
+
     // Crear el nuevo producto en la base de datos
     await Product.create({
       nombre: nombre,
@@ -77,14 +91,17 @@ exports.agregarProducto = async (req, res) => {
 
     // Redirigir al panel de admin para ver el nuevo producto
     res.redirect("/admin");
+
   } catch (error) {
     res.status(500).send("Error al guardar el producto en la base de datos");
   }
 };
 
 
+// Muestra el formulario para editar un producto existente
 exports.mostrarFormularioEditarProducto = async (req, res) => {
   try {
+
     // Buscar el producto por su ID (Primary Key)
     const producto = await Product.findByPk(req.params.id);
 
@@ -96,13 +113,17 @@ exports.mostrarFormularioEditarProducto = async (req, res) => {
       producto: producto,
       esEdicion: true
     });
+
   } catch (error) {
     res.status(500).send("Error al obtener los datos del producto");
   }
 };
 
+
+// Guarda las modificaciones realizadas sobre un producto
 exports.editarProducto = async (req, res) => {
   try {
+
     // Buscar el producto por su ID
     const producto = await Product.findByPk(req.params.id);
 
@@ -134,16 +155,23 @@ exports.editarProducto = async (req, res) => {
 
     // Redirigir al panel de admin para ver los cambios
     res.redirect("/admin");
+
   } catch (error) {
     res.status(500).send("Error al actualizar el producto");
   }
 };
 
 
+// Realiza una baja lógica del producto
 exports.eliminarProducto = async (req, res) => {
+
+  // Obtiene el ID enviado desde el formulario
+
+
   const { id } = req.body;
 
   try {
+
     // Marcar el producto como inactivo (baja lógica)
     // Esto evita que aparezca en el catálogo pero mantiene el historial de ventas
     await Product.update(
@@ -153,12 +181,18 @@ exports.eliminarProducto = async (req, res) => {
 
     // Redirigir al panel de admin
     res.redirect("/admin");
+
   } catch (error) {
     res.status(500).send("Error al eliminar el producto");
   }
 };
+
+
+// Genera la información para la vista de reportes
 exports.mostrarReportes = async (req, res) => {
   try {
+
+    // Obtiene los productos más vendidos junto con la cantidad e ingreso generado
     const productosMasVendidos = await OrderItem.findAll({
       attributes: [
         'product_id',
@@ -177,6 +211,7 @@ exports.mostrarReportes = async (req, res) => {
       raw: false
     });
 
+    // Obtiene las 10 ventas con mayor importe
     const ventasMasCaras = await Order.findAll({
       attributes: ['id', 'fecha', 'total'],
       order: [['total', 'DESC']],
@@ -191,15 +226,17 @@ exports.mostrarReportes = async (req, res) => {
       }]
     });
 
+    // Obtiene los últimos accesos realizados por administradores
     const adminLogs = await AdminLoginLog.findAll({
       order: [['fecha', 'DESC']],
       limit: 10
     });
 
-    return res.render("admin-reportes", { 
-      productosMasVendidos: productosMasVendidos,
-      ventasMasCaras: ventasMasCaras,
-      adminLogs: adminLogs
+    // Envía toda la información a la vista de reportes
+    return res.render("admin-reportes", {
+      productosMasVendidos,
+      ventasMasCaras,
+      adminLogs
     });
 
   } catch (error) {

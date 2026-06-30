@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
+const exportController = require("../controllers/exportController");
 const authController = require("../controllers/authController");
 const upload = require("../middleware/upload"); // Asegúrate de que la ruta a multer sea correcta
 
@@ -12,6 +13,11 @@ router.get("/admin", requireSession, adminController.mostrarPanelAdmin);
 
 // RUTA PARA VER REPORTES
 router.get("/admin/reportes", requireSession, adminController.mostrarReportes);
+
+// RUTAS DE EXPORTACIÓN A EXCEL (Protegidas)
+router.get('/admin/export/ventas', requireSession, exportController.exportVentasExcel);
+router.get('/admin/export/productos', requireSession, exportController.exportProductosExcel);
+router.get('/admin/export/logs', requireSession, exportController.exportAdminLogsExcel);
 
 
 // --- CONTROL DE PRODUCTOS (PROTEGIDOS CON REQUERIMIENTO DE SESIÓN) ---
