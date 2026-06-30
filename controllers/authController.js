@@ -116,7 +116,7 @@ exports.loginAdmin = async (req, res) => {
         // B) GENERAR JSON WEB TOKEN (Para consumo seguro y autenticado de la API REST)
         const token = jwt.sign(
           { id: cuenta.id, username: cuenta.username, role: "admin" },
-          process.env.JWT_SECRET || 'secreto_para_jwt_grupo6',
+          process.env.JWT_SECRET,
           { expiresIn: '8h' }
         );
 
