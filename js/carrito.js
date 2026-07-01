@@ -36,38 +36,55 @@ document.addEventListener("DOMContentLoaded", () => {
             btnConfirmar.disabled = true;
             return;
         }
+        
+// Variable para ir acumulando el total de la compra
+let totalGeneral = 0;
 
-        let totalGeneral = 0;
+// Recorre todos los productos del carrito
+carrito.forEach((item, index) => {
 
-        carrito.forEach((item, index) => {
-            const subtotal = item.precio * item.cantidad;
-            totalGeneral += subtotal;
+    // Calcula el subtotal del producto (precio × cantidad)
+    const subtotal = item.precio * item.cantidad;
 
-            const itemRow = document.createElement("div");
-            itemRow.className = "producto-card carrito-item"; 
+    // Suma el subtotal al total general
+    totalGeneral += subtotal;
 
-            itemRow.innerHTML = `
-                <div class="carrito-info">
-                    <div>
-                        <h3>${item.nombre}</h3>
-                        <p class="precio-unitario">Precio unitario: ${formatearMoneda(item.precio)}</p>
-                    </div>
-                </div>
-                <div class="carrito-acciones">
-                    <div class="carrito-controles">
-                        <button class="btn-restar" data-index="${index}">-</button>
-                        <span class="cantidad-numero">${item.cantidad}</span>
-                        <button class="btn-sumar" data-index="${index}">+</button>
-                    </div>
-                    <p class="precio-subtotal">${formatearMoneda(subtotal)}</p>
-                </div>
-            `;
-            contenedorItems.appendChild(itemRow);
-        });
+    // Crea un contenedor para mostrar el producto en el carrito
+    const itemRow = document.createElement("div");
+    itemRow.className = "producto-card carrito-item";
 
-        totalCarrito.textContent = formatearMoneda(totalGeneral);
-        btnConfirmar.disabled = false;
-    }
+    // Genera el contenido HTML del producto
+    itemRow.innerHTML = `
+        <div class="carrito-info">
+            <div>
+                <h3>${item.nombre}</h3>
+                <p class="precio-unitario">Precio unitario: ${formatearMoneda(item.precio)}</p>
+            </div>
+        </div>
+
+        <div class="carrito-acciones">
+
+            <!-- Botones para disminuir o aumentar la cantidad -->
+            <div class="carrito-controles">
+                <button class="btn-restar" data-index="${index}">-</button>
+                <span class="cantidad-numero">${item.cantidad}</span>
+                <button class="btn-sumar" data-index="${index}">+</button>
+            </div>
+
+            <!-- Muestra el subtotal del producto -->
+            <p class="precio-subtotal">${formatearMoneda(subtotal)}</p>
+        </div>
+    `;
+
+    // Agrega el producto al contenedor del carrito
+    contenedorItems.appendChild(itemRow);
+});
+
+// Muestra el total de la compra
+totalCarrito.textContent = formatearMoneda(totalGeneral);
+
+// Habilita el botón para confirmar la compra
+btnConfirmar.disabled = false;
 
 //logica para manejar los botones de sumar y restar cantidad de productos en el carrito
 
