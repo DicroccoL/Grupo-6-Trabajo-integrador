@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
     process.env.DB_PASSWORD, 
     {
         host: process.env.DB_HOST,
-        port: process.env.DB_PORT || 3305,
+        port: process.env.DB_PORT || 3305, // Puerto por defecto de MySQL
         dialect: 'mysql',
 
         logging: false, // para no mostrar consultas SQL en consola
