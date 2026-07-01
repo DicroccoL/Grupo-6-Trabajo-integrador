@@ -60,7 +60,7 @@ app.use(session({
   resave: false,             // Evita guardar la sesión si no hubo cambios
   saveUninitialized: false,  // No guarda sesiones vacías 
   cookie: {
-    secure: false,           // Usar false ya que estás en entorno local sin HTTPS
+    secure: false,          
     maxAge: 1000 * 60 * 10
   }
 }));

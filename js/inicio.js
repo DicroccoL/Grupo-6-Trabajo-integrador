@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const infoPagina = document.getElementById("info-pagina");
 
     // Configuración de paginación
-    const productosPorPagina = 10;
+    const productosPorPagina = 5;
     let paginaActual = 1;
     let categoriaFiltro = "Todos";
     let productosVisibles = [];
@@ -81,10 +81,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderizarPagina() {
         productosVisibles = obtenerProductosFiltrados();
 
-        const totalPaginas =
-            Math.ceil(productosVisibles.length / productosPorPagina);
+        const totalPaginas = Math.ceil(productosVisibles.length / productosPorPagina);
 
-        if (paginaActual > totalPaginas) paginaActual = totalPaginas;
+        if (totalPaginas === 0) {
+            paginaActual = 1;
+        } else if (paginaActual > totalPaginas) {
+            paginaActual = totalPaginas;
+        }
+
         if (paginaActual < 1) paginaActual = 1;
 
         const inicio = (paginaActual - 1) * productosPorPagina;
@@ -98,6 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
             contenedorProductos.innerHTML =
                 '<p class="no-productos">No hay productos disponibles.</p>';
             controlesPaginacion.style.display = "none";
+            infoPagina.textContent = "";
+            btnAnterior.disabled = true;
+            btnSiguiente.disabled = true;
         } else {
             productosPagina.forEach(tarjeta => {
                 contenedorProductos.appendChild(tarjeta.cloneNode(true));
