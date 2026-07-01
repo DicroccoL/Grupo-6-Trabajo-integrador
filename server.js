@@ -34,6 +34,7 @@ const apiRoutes = require("./routes/api");
 // inicializa express
 const app = express();
 
+// Definir relaciones entre modelos (Sequelize)
 // Una orden puede tener muchos detalles (items)
 Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'items' });
 
